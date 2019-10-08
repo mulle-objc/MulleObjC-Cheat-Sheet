@@ -51,6 +51,14 @@ Two ways of commenting:
 */
 ```
 
+To comment out many lines of code, you can also use
+
+``` objective-c
+#if 0
+whatever
+#endif
+```
+
 Using `pragma` to organize your code:
 ```objC
 #pragma mark - Use pragma mark to logically organize your code
@@ -128,7 +136,7 @@ uint64_t anEightByteUnsignedInt = 18446744073709551615;
 
 #### Floating Point
 
-Floats cannot be signed or unsigned.
+Floats are always implicitly signed.
 
 ```objC
 // Single precision floating-point (4 bytes for both 32-bit and 64-bit)
