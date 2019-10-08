@@ -359,7 +359,7 @@ Operator | Purpose
 | & | Bitwise AND
 | &#124; | Bitwise Inclusive OR
 | ^ | Exclusive OR
-| ~ | Unary complement (bit inversion)
+| &#126; | Unary complement (bit inversion)
 | << | Shift Left
 | >> | Shift Right
 
