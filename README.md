@@ -163,7 +163,7 @@ id delegate = self->delegate;
 **Class** : Used to denote an object's class and can be used for introspection of objects.
 
 ```objC
-Class aClass = [UIView class];
+Class aClass = [NSArray class];
 ```
 
 **Method** : Used to denote a method and can be used for swizzling methods.
@@ -201,18 +201,18 @@ Enumeration types can be defined a number of different ways:
 
 ```objC
 enum {
-    UITableViewCellStyleDefault,
-    UITableViewCellStyleValue1,
-    UITableViewCellStyleValue2,
-    UITableViewCellStyleSubtitle
+    CellStyleDefault,
+    CellStyleValue1,
+    CellStyleValue2,
+    CellStyleSubtitle
 };
 
 typedef enum {
-    UITableViewCellStyleDefault,
-    UITableViewCellStyleValue1,
-    UITableViewCellStyleValue2,
-    UITableViewCellStyleSubtitle
-} UITableViewCellStyle;
+    CellStyleDefault,
+    CellStyleValue1,
+    CellStyleValue2,
+    CellStyleSubtitle
+} CellStyle;
 ```
 
 #### Working with Bitmasks
@@ -237,20 +237,24 @@ if (status & RPOptionTop) {
 
 ### Casting to Data Types
 
-Sometimes it is necessary to cast an `id` or different type into a specific class or data type.  Examples of this would be casting from a `float` to an `int` or from a `UITableViewCell` to a subclass such as `RPTableViewCell`.
+Sometimes it is necessary to cast an `id` or different type into a specific class or data type.  Examples of this would be casting from a `float` to an `int` or from a `NSObject` to a subclass such as `NSArray`.
 
 Casting non-object data types:
 
 ```objC
 // Format: nonObjectType variableName = (nonObjectType)variableNameToCastFrom;
-int anInt = (int)anAnonymouslyTypedNonObjectOrDifferentDataType;
+int anInt = (int) anAnonymouslyTypedNonObjectOrDifferentDataType;
 ```
 
 Casting object data types:
 
 ```objC
 // Format: ClassNameOrObjectType *variableName = (ClassNameOrObjectType *)variableNameToCastFrom;
-UIViewController *aViewController = (UIViewController *)anAnonymouslyTypedObjectOrDifferentDataType;
+NSArray *array;
+
+array = nil;
+if( [someObject isKindOfClass:[NSArray class]])
+   array = (NSArray *) someParameter;
 ```
 
 [Back to top](#objective-c-cheat-sheet)
@@ -970,19 +974,19 @@ PNGImage+HeightCrop.h
 ```objC
 @interface PNGImage( HeightCrop)
 
-- (UIImage *) croppedImageToHeight:(float) height;
+- (PNGImage *) croppedImageToHeight:(float) height;
 
 @end
 ```
 
-UIImage+ResizeCrop.m
+PNGImage+ResizeCrop.m
 
 ```objC
 #import "PNGImage+HeightCrop.h"
 
 @implementation PNGImage( HeightCrop)
 
-- (UIImage *) croppedImageToHeight:(float) height
+- (PNGImage *) croppedImageToHeight:(float) height
 {
     // Implementation code here
 }
@@ -1122,7 +1126,7 @@ Subclassing is essentially the same as [inheritance](#inheritance), but you woul
 * Override a method or property implementation in the superclass; or
 * Create specialized behavior for the subclass (e.g. `Toyota` is a subclass of `Car`... it still has tires, an engine, etc, but it has additional custom behavior that uniquely makes it a `Toyota`)
 
-Many design patterns, such as [categories](#categories) and [delegation](#delegation), exist so that you don't have to subclass another class.  For example, the `UITableViewDelegate` protocol was created to allow you to provide the implementation of methods like `tableView:didSelectRowAtIndexPath:` in your own class instead of having to subclass `UITableView` to override that method.
+Many design patterns, such as [categories](#categories) and [delegation](#delegation), exist so that you don't have to subclass another class.
 
 Other times, classes like `NSObject` are designed to be easily subclassed.  The general rule of thumb is to subclass another class only if you can satisfy the [Liskov substitution principle](http://en.wikipedia.org/wiki/Liskov_substitution_principle):
 
@@ -1466,6 +1470,8 @@ Post notification:
 [[NSNotificationCenter defaultCenter] postNotificationName:RPAppDidResumeFromBackgroundNotification object:self];
 ```
 
+[Back to top](#objective-c-cheat-sheet)
+
 ## User Defaults
 
 User defaults are basically a way of storing simple preference values which can be saved and restored across app launches.  It is not meant to be used as a data storage layer, like Core Data or sqlite.
@@ -1501,7 +1507,7 @@ To turn a class into a singleton, you adopt the protocol `MulleObjCSingleton`.
 @end
 ```
 
-And you automatically gain a `+ (instancetype)sharedInstance` method.
+By that you automatically gain a `+ (instancetype) sharedInstance` method.
 
 If the above code were placed within `MyClass`, then you would get a reference to that singleton class in another class with the following code:
 
