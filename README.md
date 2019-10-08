@@ -615,35 +615,36 @@ For methods without a return type, use `void`:
 
 ```objC
 // Does not return anything or take any arguments
-- (void)someMethod;
+- (void) someMethod;
 ```
 
 `+` precedes declarations of class methods:
 
 ```objC
 // Call on a class (e.g. [MyClass someClassMethod]);
-+ (void)someClassMethod;
++ (void )someClassMethod;
 ```
 
 `-` precedes declarations of class instance methods:
 
 ```objC
 // Called on an instance of a class (e.g. [[NSString alloc] init]);
-- (void)someClassInstanceMethod;
+- (void) someClassInstanceMethod;
 ```
 
 Method arguments are declared after colons `:` and the method signature should describe the argument type:
 
 ```objC
 // Does something with an NSObject argument
-- (void)doWorkWithObject:(NSObject *)object;
+- (void) doWorkWithObject:(NSObject *)object;
 ```
 
 Argument and return types are declared using type casting syntax:
 
 ```objC
 // Returns an NSString object for the given NSObject arguments
-- (NSString *)stringFromObject:(NSObject *)object andSomeOtherObject:(NSObject *)otherObject;
+- (NSString *) stringFromObject:(NSObject *)object 
+            andSomeOtherObject:(NSObject *)otherObject;
 ```
 
 #### Calling Methods
@@ -654,11 +655,11 @@ Methods are called using bracket syntax: `[self someMethod];` or `[self sometMet
 
 At times, it is necessary to call a method in the superclass using `[super someMethod];`.
 
-Under the hood, methods are implemented via message sending and they are turned into a variation of one of these two C functions:
+Under the hood, method calls are turned into a optimization-level dependent variation of one of these two C functions:
 
 ```objC
-id objc_msgSend(id self, SEL op, ...);
-id objc_msgSendSuper(struct objc_super *super, SEL op, ...);
+void  *mulle_objc_object_call( id self, SEL _cmd, void *_param);
+void  *mulle_objc_object_call( id self, SEL _cmd, void *_param, mulle_objc_superid_t superid);
 ```
 
 #### Testing Selectors
@@ -987,11 +988,18 @@ PNGImage *croppedImage = [bobRossImage croppedImageToHeight:1024.0];
 
 #### Naming Conflicts
 
-Great advice from [Apple's docs](https://developer.apple.com/library/ios/documentation/cocoa/conceptual/ProgrammingWithObjectiveC/CustomizingExistingClasses/CustomizingExistingClasses.html):
+Because the methods declared in a category are added to an existing class, you should be very careful about method names.
+If the name of a method declared in a category is the same as a method in the original class, the method in the category overrides the original class. If it overrides a method in another category, the behavior is undefined as long as the dependency is not explicitly declared with MULLE_OBJC_DEPENDS_ON_CATEGORY. For proper overriding of a method in a class you do not own,
+you must be sure that the method is defined, where you expect it to be defined.
 
->Because the methods declared in a category are added to an existing class, you need to be very careful about method names.
->
->If the name of a method declared in a category is the same as a method in the original class, or a method in another category on the same class (or even a superclass), the behavior is undefined as to which method implementation is used at runtime. This is less likely to be an issue if you’re using categories with your own classes, but can cause problems when using categories to add methods to standard Cocoa or Cocoa Touch classes.
+e.g.
+
+```objC
+MULLE_OBJC_DEPENDS_ON_CATEGORY( Foo, OverrideMe);
+```
+
+TODO: Show how to write an assert to test that the method to override is indeed in the expected place.
+
 
 ### Delegation
 
