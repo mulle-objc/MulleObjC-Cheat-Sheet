@@ -1,27 +1,16 @@
-## Objective-C Cheat Sheet
+# mulle-objc version
+This is a edited version of the Objective-C Cheat Sheet for mulle-objc. I took out everything that is not applicable to
+**mulle-objc**. Visit the original site [iwasrobbed/Objective-C-CheatSheet](//github.com/iwasrobbed/Objective-C-CheatSheet)
+for more informaion.
+
+I intentionally reworded this as if I had written this, to avoid confusion. The original list of contributors can be [found here](https://github.com/iwasrobbed/Objective-C-CheatSheet/graphs/contributors).
+
+
+# Objective-C Cheat Sheet
 
 This is not meant to be a beginner's guide or a detailed discussion about Objective-C; it is meant to be a quick reference to common, high level topics.
 
-* Read my [Swift](https://github.com/iwasrobbed/Swift-CheatSheet) cheatsheet as well (Swift will replace Objective-C for iOS apps).
-* Support this project via Gratipay <a href="https://gratipay.com/iwasrobbed/"><img src="http://img.shields.io/gratipay/iwasrobbed.svg"></a>
-* To download a PDF version of this, use [GitPrint.com](https://gitprint.com/iwasrobbed/Objective-C-CheatSheet/blob/master/README.md?download)
-
-**Note**: I wrote this over a stretch of 3 days, so it could probably use some editing and clarifications where necessary. Please feel free to edit this document to update or improve upon it, making sure to keep with the general formatting of the document.  The list of contributors can be [found here](https://github.com/iwasrobbed/Objective-C-CheatSheet/graphs/contributors).
-
-For advanced Objective-C topics, these two sites are updated weekly:
-* http://www.objc.io
-* http://nshipster.com
-
-If something isn't mentioned here, it's probably covered in detail in one of these:
-
-* [Swift, Apple's new language to replace Objective-C](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language)
-* [NSHipster's "Fake" book aka concise usage examples of common Objective-C tasks](https://gumroad.com/l/the-nshipster-fake-book)
-* [The Objective-C Programming Language](http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/ObjectiveC/Introduction/introObjectiveC.html)
-* [Coding Guidelines for Cocoa](https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CodingGuidelines/CodingGuidelines.html)
-* [iOS App Programming Guide](http://developer.apple.com/library/ios/#documentation/iphone/conceptual/iphoneosprogrammingguide/Introduction/Introduction.html)
-* [Cocoa Encyclopedia](https://developer.apple.com/library/mac/documentation/general/conceptual/CocoaEncyclopedia/)
-
-### Table of Contents
+## Table of Contents
 
 * [Commenting](#commenting)
 * [Data Types](#data-types)
@@ -98,6 +87,7 @@ For a complete guide to 64-bit changes, please [see the transition document](htt
 Integers can be signed or unsigned.  When signed, they can be either positive or negative and when unsigned, they can only be positive.  Example: When declaring an `unsigned int`, the range of allowable integer values for a 32-bit compiler will shift from -2147483648 to +2147483647 to instead be 0 to +4294967295.
 
 **Integer types with their accompanying byte sizes:**
+
 ```objC
 // Char (1 byte for both 32-bit and 64-bit)
 unsigned char anUnsignedChar = 255;
@@ -125,6 +115,7 @@ NSLog(@"long long size: %zu", sizeof(long long));
 ```
 
 **Fixed width integer types with their accompanying byte sizes as the variable names:**
+
 ```objC
 // Exact integer types
 int8_t aOneByteInt = 127;
@@ -135,20 +126,6 @@ int32_t aFourByteInt = 2147483647;
 uint32_t aFourByteUnsignedInt = 4294967295;
 int64_t anEightByteInt = 9223372036854775807;
 uint64_t anEightByteUnsignedInt = 18446744073709551615;
-
-// Minimum integer types
-int_least8_t aTinyInt = 127;
-uint_least8_t aTinyUnsignedInt = 255;
-int_least16_t aMediumInt = 32767;
-uint_least16_t aMediumUnsignedInt = 65535;
-int_least32_t aNormalInt = 2147483647;
-uint_least32_t aNormalUnsignedInt = 4294967295;
-int_least64_t aBigInt = 9223372036854775807;
-uint_least64_t aBigUnsignedInt = 18446744073709551615;
-
-// The largest supported integer type
-intmax_t theBiggestInt = 9223372036854775807;
-uintmax_t theBiggestUnsignedInt = 18446744073709551615;
 ```
 
 #### Floating Point
@@ -174,7 +151,7 @@ NSLog(@"long double size: %zu", sizeof(long double));
 **id** : Known as the anonymous or dynamic object type, it can store a reference to any type of **object** with no need to specify a pointer symbol.
 
 ```objC
-id delegate = self.delegate;
+id delegate = self->delegate;
 ```
 
 **Class** : Used to denote an object's class and can be used for introspection of objects.
@@ -186,7 +163,7 @@ Class aClass = [UIView class];
 **Method** : Used to denote a method and can be used for swizzling methods.
 
 ```objC
-Method aMethod = class_getInstanceMethod(aClass, aSelector);
+Method aMethod = [aClass instanceMethodForSelector:aSelector);
 ```
 
 **SEL** : Used to specify a selector which is compiler-assigned code that identifies a method name.
@@ -201,7 +178,7 @@ SEL someSelector = @selector(someMethodName);
 IMP theImplementation = [self methodForSelector:someSelector];
 ```
 
-**BOOL** : Used to specify a boolean type where `0` is considered `NO` (false) and any non-zero value is considered `YES` (true).  Any `nil` object is also considered to be `NO` so there is no need to perform an equality check with `nil` (e.g. just write `if (someObject)` not `if (someObject != nil)`).
+**BOOL** : Used to specify a boolean type where `0` is considered `NO` (false) and `1` is considered `YES` (true).  Any `nil` object is also considered to be `NO` so there is no need to perform an equality check with `nil` (e.g. just write `if (someObject)` not `if (someObject != nil)`).
 
 ```objC
 // Boolean
@@ -210,33 +187,13 @@ BOOL isBool = YES; // Or NO
 
 **nil** : Used to specify a null object pointer.  When classes are first initialized, all properties of the class are set to `0` which means they point to `nil`.
 
-Objective-C also has a number of other types such as `NSInteger`, `NSUInteger`, `CGRect`, `CGFloat`, `CGSize`, `CGPoint`, etc.
+Objective-C also has a number of other types such as `NSInteger`, `NSUInteger`, `NSRange` etc.
 
 ### Enum & Bitmask Types
 
 Enumeration types can be defined a number of different ways:
 
 ```objC
-// Specifying a typed enum with a name (recommended way)
-typedef NS_ENUM(NSInteger, UITableViewCellStyle) {
-    UITableViewCellStyleDefault,
-    UITableViewCellStyleValue1,
-    UITableViewCellStyleValue2,
-    UITableViewCellStyleSubtitle
-};
-
-// Specify a bitmask with a name (recommended way)
-typedef NS_OPTIONS(NSUInteger, RPBitMask) {
-    RPOptionNone      = 0,
-    RPOptionRight     = 1 << 0,
-    RPOptionBottom    = 1 << 1,
-    RPOptionLeft      = 1 << 2,
-    RPOptionTop       = 1 << 3
-};
-
-// Other methods:
-
-// Untyped
 enum {
     UITableViewCellStyleDefault,
     UITableViewCellStyleValue1,
@@ -244,7 +201,6 @@ enum {
     UITableViewCellStyleSubtitle
 };
 
-// Untyped with a name
 typedef enum {
     UITableViewCellStyleDefault,
     UITableViewCellStyleValue1,
@@ -295,31 +251,37 @@ UIViewController *aViewController = (UIViewController *)anAnonymouslyTypedObject
 
 ## Constants
 
-Using `const` is usually the better approach since `const` points to the same memory address for any references to that item in code. `#define` defines a macro which replaces all references with the actual constant value contents before compilation starts, instead of being a memory pointer to that constant value.
+`#define` defines a macro which replaces all references with the actual constant value contents before compilation starts, instead of being a memory pointer to that constant value. You can also use `const` to points to read only memory. But the
+use of `const` is generally avoided in mulle-objc, as it adds complexity with negligble gain. 
+For integer constants that fit into an `int` you will often find anonymous enums handy.
 
 Constants can be defined as:
 
 ```objC
-// Format: type const constantName = value;
-NSString *const kRPShortDateFormat = @"MM/dd/yyyy";
+// Format: type constantName = value;
+NSString *kRPShortDateFormat = @"MM/dd/yyyy";
 
 // Format: #define constantName value
 #define kRPShortDateFormat @"MM/dd/yyyy"
+
+// Format: enum {  MyIntConstant = value };
+enum {  MyMagicIntNumber = 1848 };
 ```
 
 To make the constant available to external classes, you must also add it to the header `.h` file:
 
 ```objC
-extern NSString *const kRPShortDateFormat;
+extern NSString * kRPShortDateFormat;
 ```
 
 If you know that a constant will only be available within it's containing implementation `.m` file, specify it as:
 
 ```objC
-static NSString *const kRPShortDateFormat = @"MM/dd/yyyy";
+static NSString *kRPShortDateFormat = @"MM/dd/yyyy";
 ```
 
-A static variable declared within a method retains its value between invocations.  This can be useful when declaring a [singleton](#singletons) or creating custom setters/getters for a property.
+A static variable declared within a method retains its value between invocations.  
+This is only useful for constants and should be avoided. Do not use static variables for singletons or such.
 
 [Back to top](#objective-c-cheat-sheet)
 
@@ -427,6 +389,9 @@ Example:
 MyClass.h
 
 ```objC
+#import "import.h"
+
+// import other classes in same project
 #import "SomeClass.h"
 
 // Used instead of #import to forward declare a class in property return types, etc.
@@ -455,6 +420,9 @@ MyClass.m
 ```objC
 #import "MyClass.h"
 #import "SomeOtherClass.h"
+
+#import "import-private.h"
+
 
 // Declare any constants at the top
 NSString *const kRPErrorDomain = @"com.myIncredibleApp.errors";
@@ -514,10 +482,18 @@ static NSString *const kRPShortDateFormat = @"MM/dd/yyyy";
 When you want to create a new instance of a class, you use the syntax:
 
 ```objC
-MyClass *myClass = [[MyClass alloc] init];
+MyClass *myClass = [MyClass instantiatedObject];
 ```
 
-The `alloc` class method returns a pointer to a newly allocated block of memory large enough to store an instance of the class. The allocated memory contains zeros except for one instance variable, `isa`, that all Objective-C objects are required to have. The `isa` variable is automatically initialized to point to the class object that allocated the memory and enables the instance to receive messages such as `init` that are used to complete initialization.
+This is a shortcut for `[[MyClass new] autorelease]` which in turn is a shortcut for:
+
+
+```objC
+MyClass *myClass = [[[MyClass alloc] init] autorelease];
+```
+
+
+The `alloc` class method returns a pointer to memory in a newly allocated block. The allocated memory is large enough to store an instance of the class and meta-information, such as the `isa` pointer that preceeds that memory block. The allocated instance memory contains zeros except. `isa`, contained in the meta-infomation, is automatically initialized to point to the class object that allocated the memory and enables the instance to receive messages such as `init` that are used to complete initialization.
 
 [Back to top](#objective-c-cheat-sheet)
 
@@ -590,7 +566,6 @@ Directive | Purpose
 @private | Limits the scope of instance variables specified below it to the class that declares it
 @protected | Limits the scope of instance variables specified below it to declaring and inheriting classes
 @public | Removes restrictions on the scope of instance variables specified below it
-@package | Declares the instance variables following the directive as public inside the framework that defined the class, but private outside the framework (64-bit only)
 
 The default is `@protected`, so there is no need to explicitly specify this.
 
@@ -600,7 +575,6 @@ Directive | Purpose
 :---: | ---
 @selector(method) | Returns the compiled selector that identifies a method
 @protocol(name) | Returns the given protocol (an instance of the `Protocol` class)
-@synchronized | Encapsulates code in a mutex lock to ensure that the block of code and the locked object can only be accessed by one thread at a time
 @autoreleasepool | Replaces (and is 6 times faster than) the NSAutoreleasePool class
 @encode(spec) | Yields a character string that encodes the type structure of `spec`
 @compatibility_alias | Allows you to define an alias name for an existing class.
@@ -616,24 +590,10 @@ Literals are compiler directives which provide a shorthand notation for creating
 Syntax | What it does
 :---: | ---
 @"string" | Returns an `NSString` object
-@28, @3.14, @YES | Returns an `NSNumber` object initialized with an appropriate class constructor, depending on the type
+@28, @3.14| Returns an `NSNumber` object initialized with an appropriate class constructor, depending on the value
 @[] | Returns an `NSArray` object
 @{} | Returns an `NSDictionary` object
 @() | Dynamically evaluates the boxed expression and returns the appropriate object literal based on its value
-
-#### NSArray Access Syntax
-
-```objC
-NSArray *example = @[ @"hi", @"there", @23, @YES ];
-NSLog(@"item at index 0: %@", example[0]);
-```
-
-#### NSDictionary Access Syntax
-
-```objC
-NSDictionary *example = @{ @"hi" : @"there", @"iOS" : @"people" };
-NSLog(@"hi %@", example[@"hi"]);
-```
 
 #### Caveats
 
@@ -719,32 +679,7 @@ Public properties are declared in the header (`.h`) file:
 ```objC
 @interface MyClass : NSObject
 
-@property (readonly, nonatomic, strong) NSString *fullName;
-
-@end
-```
-
-Private properties are declared in an anonymous category, or class extension, in the implementation (`.m`) file:
-
-```objC
-#import "MyClass.h"
-
-// Class extension for private variables / properties
-@interface MyClass ()
-{
-    // Instance variable
-    int somePrivateInteger;
-}
-// Private properties
-@property (nonatomic, strong) NSString *firstName;
-@property (nonatomic, strong) NSString *lastName;
-@property (readwrite, nonatomic, strong) NSString *fullName;
-
-@end
-
-@implementation MyClass
-
-// Class implementation goes here
+@property (retain) NSString *fullName;
 
 @end
 ```
@@ -754,9 +689,9 @@ The LLVM compiler automatically synthesizes all properties so there is no longer
 Even though you may not see them since they are created at build time, a getter/setter pair can be shown as:
 
 ```objC
-- (BOOL)finished
+- (BOOL) finished
 {
-    return _finished;
+    return( _finished);
 }
 - (void)setFinished:(BOOL)aValue
 {
@@ -769,11 +704,11 @@ You can overrride the getter and setter of a property to create customized behav
 ```objC
 - (NSString *)fullName
 {
-    return [NSString stringWithFormat:@"%@ %@", self.firstName, self.lastName];
+    return( [NSString stringWithFormat:@"%@ %@", self.firstName, self.lastName]);
 }
 ```
 
-Properties are typically backed by an instance variable with a leading underscore, so creating a property called `firstName` would have a backing instance variable with the name `_firstName`.  You should only access that private instance variable if you override the getter/setter or if you need to setup the ivar in the class `init` method.
+Properties are always backed by an instance variable with a leading underscore, so creating a property called `firstName` will have a backing instance variable with the name `_firstName`.  You only access that private instance variable if you override the getter/setter or if you need to setup the ivar in the class `init` method.
 
 #### Property Attributes
 
@@ -792,25 +727,18 @@ Type | What it does
 :---: | ---
 copy | Creates an immutable copy of the object upon assignment and is typically used for creating an immutable version of a mutable object.  Use this if you need the value of the object as it is at this moment, and you don't want that value to reflect any future changes made by other owners of the object.
 assign |  Generates a setter which assigns the value directly to the instance variable, rather than copying or retaining it.  This is typically used for creating properties for primitive types (`float`, `int`, `BOOL`, etc).
-weak | Variables that are `weak` can still point to objects but they do not become owners (or increase the retain count by 1). If the object's retain count drops to 0, the object will be deallocated from memory and the weak pointer will be set to `nil`.  It's best practice to create all delegates and `IBOutlet`'s as weak references since you do not own them.
-unsafe_unretained | An unsafe reference is similar to a `weak` reference in that it doesn't keep its related object alive, but it won’t be set to `nil` if the object is deallocated.  This can lead to crashes due to accessing that deallocated object and therefore you should use `weak` unless the OS or class does not support it.
-strong | This is the default and is required when the attribute is a pointer to an object. The automatically generated setter will retain (i.e. increment the retain count of) the object and keep the object alive until released.
+retain | This is the default and is required when the attribute is a pointer to an object. The automatically generated setter will retain (i.e. increment the retain count of) the object and keep the object alive until released.
 readonly | This only generates a getter method so it won't allow the property to be changed via the setter method.
 readwrite | This is the default and generates both a setter and a getter for the property.  Often times, a `readonly` property will be publicly defined and then a `readwrite` for the same property name will be privately redefined to allow mutation of the property value within that class only.
-atomic | This is the default and means that any access operation is guaranteed to be uninterrupted by another thread and is typically slower in performance to use.
-nonatomic | This is used to provide quicker (but thus interruptable) access operations.
 getter=method | Used to specify a different name for the property's getter method.  This is typically done for boolean properties (e.g. `getter=isFinished`)
 setter=method | Used to specify a different name for the property's setter method. (e.g. `setter=setProjectAsFinished`)
 
 #### Accessing Properties
 
-Properties can be accessed using either bracket syntax or dot notation, with dot notation being cleaner to read.
+Properties can be accessed with the bracket syntax:
 
 ```objC
 [self myProperty];
-
-// Or
-self.myProperty
 ```
 
 #### Local Variables
@@ -861,95 +789,12 @@ Example:
 
 #### Properties and Local Variables
 
-When using properties, instance variables are internally created with a preceeding underscore, so `myVariableName` is created as `_myVariableName`.  However, Objective-C now synthesizes these properties for you so you should never have to access that underscored instance variable directly except in a custom setter.
+When using properties, instance variables are internally created with a preceeding underscore, so `myVariableName` is created as `_myVariableName`.  
 
-Instead, instance variables should always be accessed and mutated using `self.`
-
-Local variables should not contain underscores.
-
-#### Constants
-
-These should start with `k` and `XXX` where `XXX` is a prefix, possibly your initials, to avoid naming conflicts.  You should not be afraid to be expressive with your constant naming, especially if it's a global constant.  Using `kRPNavigationFadeOutAnimationDuration` is much better than `fadeOutTiming`.
+So local variables should not contain underscores.
 
 [Back to top](#objective-c-cheat-sheet)
 
-## Blocks
-
-Blocks are essentially anonymous functions that are used to pass arbitrary code between methods or to execute code as a callback within a method.  Since blocks are implemented as closures, the surrounding state is also captured (which can sometimes lead to retain cycles).
-
-#### Syntax
-
-```objC
-// As a local variable
-returnType (^blockName)(parameterTypes) = ^returnType(parameters) {
-    // Block code here
-};
-
-// As a property
-@property (nonatomic, copy) returnType (^blockName)(parameterTypes);
-
-// As a method parameter
-- (void)someMethodThatTakesABlock:(returnType (^)(parameterTypes))blockName {
-    // Block code here
-};
-
-// As an argument to a method call
-[someObject someMethodThatTakesABlock: ^returnType (parameters) {
-    // Block code here
-}];
-
-// As a typedef
-typedef returnType (^TypeName)(parameterTypes);
-TypeName blockName = ^(parameters) {
-    // Block code here
-};
-```
-
-#### Mutating block variables
-
-Since variables within a block are just snapshots of what they were outside of the block scope, you must preceed any variables that you want to mutate within the block with `__block`, such as:
-
-```objC
-__block int someIncrementer = 0;
-[someObject someMethodThatTakesABlock:^{
-    someIncrementer++;
-}];
-```
-
-#### Retain cycles
-
-Since blocks strongly capture all variables within the scope of the block, you have to be careful how you setup your blocks code.  Here are two examples of retain cycles:
-
-```objC
-[someObject someMethodThatTakesABlock:^{
-    [someObject performSomeAction];  // Will raise a warning
-}];
-
-[self someMethodThatTakesABlock:^{
-    [self performSomeAction];       // Will raise a warning
-}];
-```
-
-In both of these cases, the object which performs the block owns the block, which also owns the object. This creates a loop, or a retain cycle, which means the memory is eventually leaked.
-
-To get around this warning you can either refactor the code to be:
-
-```objC
-[self someMethodThatTakesABlock:^{
-    [object performSomeAction];   // No retain cycle here
-}];
-```
-
-Or you can use a `__weak` object:
-
-```objC
-__weak typeof(self) weakSelf = self;
-[self someMethodThatTakesABlock:^{
-    [weakSelf performSomeAction];  // No retain cycle here
-}];
-```
-
-[Back to top](#objective-c-cheat-sheet)
 
 ## Control Statements
 
@@ -958,13 +803,18 @@ Objective-C uses all of the same control statements that other languages have:
 #### If-Else If-Else
 
 ```objC
-if (someTestCondition) {
+if (someTestCondition) 
+{
     // Code to execute if the condition is true
-} else if (someOtherTestCondition) {
-    // Code to execute if the other test condition is true
-} else {
-    // Code to execute if the prior conditions are false
-}
+} 
+else 
+   if (someOtherTestCondition) 
+   {
+       // Code to execute if the other test condition is true
+   } else 
+   {
+       // Code to execute if the prior conditions are false
+   }
 ```
 
 #### Ternary Operators
@@ -980,12 +830,11 @@ Example:
 }
 ```
 
-There is also another lesser known form: `A ?: B;` which basically returns `A` if `A` is `YES` or non-nil, otherwise it returns `B`.
-
 #### For Loops
 
 ```objC
-for (int i = 0; i < totalCount; i++) {
+for (int i = 0; i < totalCount; i++) 
+{
     // Code to execute while i < totalCount
 }
 ```
@@ -993,17 +842,19 @@ for (int i = 0; i < totalCount; i++) {
 #### Fast Enumeration
 
 ```objC
-for (Person *person in arrayOfPeople) {
+for (Person *person in arrayOfPeople) 
+{
     // Code to execute each time
 }
 ```
 
-where `arrayOfPeople` can be any object that conforms to the `NSFastEnumeration` protocol.  `NSArray` and `NSSet` enumerate over their objects, `NSDictionary` enumerates over keys, and `NSManagedObjectModel` enumerates over entities.
+where `arrayOfPeople` can be any object that conforms to the `NSFastEnumeration` protocol.  `NSArray` and `NSSet` enumerate over their objects, and `NSDictionary` enumerates over keys.
 
 #### While Loop
 
 ```objC
-while (someTextCondition) {
+while (someTextCondition) 
+{
    // Code to execute while the condition is true
 }
 ```
@@ -1011,7 +862,8 @@ while (someTextCondition) {
 #### Do While Loop
 
 ```objC
-do {
+do 
+{
     // Code to execute while the condition is true
 } while (someTestCondition);
 ```
@@ -1023,19 +875,19 @@ Switch statements are often used in place of `if` statements if there is a need 
 ```objC
 switch (errorStatusCode)
 {
-    case kRPServerErrorCode:
-        // Code to execute if it matches
-        break;
+ case RPServerErrorCode:
+     // Code to execute if it matches
+     break;
 
-    case kRPNetworkErrorCode:
-    case kRPWifiErrorCode:
-    case kRPSystemErrorCode:
-        // Code to execute if it matches
-        break;
+ case RPNetworkErrorCode:
+ case RPWifiErrorCode:
+ case RPSystemErrorCode:
+     // Code to execute if it matches
+     break;
 
-    default:
-        // Code to execute if nothing else matched
-        break;
+ default:
+     // Code to execute if nothing else matched
+     break;
 }
 ```
 
@@ -1047,21 +899,6 @@ Note: `switch` statements are fallthrough: when control reaches the matched `cas
 * `break` : Used to stop execution of a loop.
 
 Newer enumeration methods now have special `BOOL` variables (e.g. `BOOL *stop`) that are used to stop loop execution.  Setting that variable to `YES` within the loop is similar to calling `break`.
-
-[Back to top](#objective-c-cheat-sheet)
-
-## Enumeration
-
-Fast enumeration was already mentioned in the [control statements](#control-statements) section, but many collection classes also have their own block-based methods for enumerating over a collection.
-
-Block-based methods perform almost as well as using fast enumeration, but they just provide extra options for enumerating over collections.  An example of block-based enumeration over an `NSArray` would be:
-
-```objC
-NSArray *people = @[ @"Bob", @"Joe", @"Penelope", @"Jane" ];
-[people enumerateObjectsUsingBlock:^(NSString *nameOfPerson, NSUInteger idx, BOOL *stop) {
-    NSLog(@"Person's name is: %@", nameOfPerson);
-}];
-```
 
 [Back to top](#objective-c-cheat-sheet)
 
@@ -1116,10 +953,10 @@ As an example, let's say that we need to add a new method to the `UIImage` class
 UIImage+ResizeCrop.h
 
 ```objC
-@interface UIImage (ResizeCrop)
+@interface UIImage( ResizeCrop)
 
-- (UIImage *)croppedImageWithSize:(CGSize)size;
-- (UIImage *)resizedImageWithSize:(CGSize)size;
+- (UIImage *) croppedImageWithSize:(CGSize) size;
+- (UIImage *) resizedImageWithSize:(CGSize) size;
 
 @end
 ```
@@ -1129,14 +966,14 @@ UIImage+ResizeCrop.m
 ```objC
 #import "UIImage+ResizeCrop.h"
 
-@implementation UIImage (ResizeCrop)
+@implementation UIImage( ResizeCrop)
 
-- (UIImage *)croppedImageWithSize:(CGSize)size
+- (UIImage *)croppedImageWithSize:(CGSize) size
 {
     // Implementation code here
 }
 
-- (UIImage *)resizedImageWithSize:(CGSize)size
+- (UIImage *)resizedImageWithSize:(CGSize) size
 {
     // Implementation code here
 }
@@ -1147,101 +984,6 @@ You could then call these methods on any instances of `UIImage` or it's subclass
 ```objC
 UIImage *croppedImage = [userPhoto croppedImageWithSize:photoSize];
 ```
-
-#### Associative References
-
-Unless you have access to the source code for a class at compile time, it is not possible to add instance variables and properties to a class by using a category.  Instead, you have to essentially fake this by using a feature of the Objective-C runtime called **associative references**.
-
-For example, let's say that we want to add a public property to the `UIScrollView` class to store a reference to a `UIView` object, but we don't have access to `UIScrollView`'s source code.  We would have to create a category on `UIScrollView` and then create a pair of getter/setter methods for this new property to store a reference like this:
-
-UIScrollView+UIViewAdditions.h
-
-```objC
-#import <UIKit/UIKit.h>
-
-@interface UIScrollView (UIViewAdditions)
-
-@property (nonatomic, strong) UIView *myCustomView;
-
-@end
-```
-
-UIScrollView+UIViewAdditions.m
-
-```objC
-#import "UIScrollView+UIViewAdditions.h"
-#import <objc/runtime.h>
-
-static char UIScrollViewMyCustomView;
-
-@implementation UIScrollView (UIViewAdditions)
-
-@dynamic myCustomView;
-
-- (void)setMyCustomView:(UIView *)customView
-{
-    [self willChangeValueForKey:@"myCustomView"];
-    objc_setAssociatedObject(self, &UIScrollViewMyCustomView, customView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    [self didChangeValueForKey:@"myCustomView"];
-}
-
-- (UIView *)myCustomView {
-    return objc_getAssociatedObject(self, &UIScrollViewMyCustomView);
-}
-
-@end
-```
-
-Let's explain a bit about what's happening here:
-
-* We create a static key called `UIScrollViewMyCustomView` that we can use to get and set the associated object.  Declaring it as `static` ensures that it is unique since it always points to the same memory address.
-* Next, we declare the property we are adding as `@dynamic` which tells the compiler that the getter/setter is not implemented by the `UIScrollView` class itself.
-* Within the setter, we use `willChangeValueForKey` followed by `didChangeValueForKey` to ensure that we notify any key-value observers of a change to this property.
-* Within the setter, we use `objc_setAssociatedObject` to store a reference to the object that we really care about, `customView` under the static key that we created. `&` is used to denote that it is a pointer to a pointer to `UIScrollViewMyCustomView`
-* Within the getter, we retrieve the object reference using `objc_getAssociatedObject` and a pointer to the static key
-
-We could then use the property just like we would any other property:
-
-```objC
-UIScrollView *scrollView = [[UIScrollView alloc] init];
-scrollView.myCustomView = [[UIView alloc] init];
-NSLog(@"Custom view is %@", scrollView.myCustomView);
-// Custom view is <UIView: 0x8e4dfb0; frame = (0 0; 0 0); layer = <CALayer: 0x8e4e010>>
-```
-
-More info from the docs:
-
->The [objc_setAssociatedObject] function takes four parameters: the source object, a key, the value, and an association policy constant. The key is a void pointer.
->
->The key for each association must be unique. A typical pattern is to use a static variable. The policy specifies whether the associated object is assigned, retained, or copied, and whether the association is be made atomically or non-atomically. This pattern is similar to that of the attributes of a declared property
-
-The possible property declaration attributes are:
-
->OBJC_ASSOCIATION_RETAIN_NONATOMIC, OBJC_ASSOCIATION_ASSIGN, OBJC_ASSOCIATION_COPY_NONATOMIC, OBJC_ASSOCIATION_RETAIN, OBJC_ASSOCIATION_COPY
-
-#### Class Extension Categories
-
-In the section about [declaring classes](#declaring-classes), it shows how the private instance variables and properties within a class are actually added to the class by using an anonymous (unnamed) category, also known as a class extension.
-
-```objC
-// Class extensions for private variables / properties
-@interface MyClass ()
-{
-    int somePrivateInt;
-
-    // Re-declare as a private read-write version of the public read-only property
-    @property (readwrite, nonatomic, strong) SomeClass *someProperty;
-}
-@end
-```
-
-Class extensions are the only way that you can add variables and properties using a category, so you must have access to the source code at compile time in order to use this method.
-
-#### Core Data Categories
-
-Categories are very useful when you are working with Core Data models and want to add additional methods to an `NSManagedObject` subclass without worrying about Xcode writing over the model class each time you migrate a model.
-
-Model classes should be kept to a minimum, containing only the model properties and Core Data generated accessor methods.  All others, such as transient methods, should be implemented in a category on the model class.
 
 #### Naming Conflicts
 
@@ -1314,6 +1056,11 @@ RPLocationManager.h
 When we declare the `@protocol` named `RPLocationManagerDelegate`, all methods are defaulted to being `@required` so it's not necessary to explicitly state this.  However, if you want certain methods to be `@optional` for conforming classes to implement, you must state this.
 
 Additionally, it is necessary to weakly declare an anonymously typed property called `delegate` which also references the `RPLocationManagerDelegate` protocol.
+
+#### Adding Default Implementations to Your Own Protocol
+
+TODO: Talk about protocolclasses here a bit.
+
 
 #### Sending Delegate Messages
 
@@ -1740,34 +1487,6 @@ Post notification:
 [[NSNotificationCenter defaultCenter] postNotificationName:kRPAppDidResumeFromBackgroundNotification object:self];
 ```
 
-### View Controller Properties
-
-When you are preparing to display a new view controller, you can assign data to one of it's properties prior to display:
-
-```objC
-MyViewController *myVC = [[MyViewController alloc] init];
-myVC.someProperty = self.someProperty;
-[self presentViewController:myVC animated:YES completion:nil];
-```
-
-### Storyboard Segue
-
-When you are transitioning from one view controller to another in a storyboard, there is an easy way to pass data between the two by implementing the `prepareForSegue:sender:` method:
-
-```objC
-#pragma mark - Segue Handler
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"showLocationSearch"] {
-        [segue.destinationViewController setDelegate:self];
-    } else if ([segue.identifier isEqualToString:@"showDetailView"]) {
-        DetailViewController *detailView = segue.destinationViewController;
-        detailView.location = self.location;
-    }
-}
-```
-
 ## User Defaults
 
 User defaults are basically a way of storing simple preference values which can be saved and restored across app launches.  It is not meant to be used as a data storage layer, like Core Data or sqlite.
@@ -1796,7 +1515,7 @@ There are also other convenience methods on `NSUserDefaults` instances such as `
 
 Singleton's are a special kind of class where only one instance of the class exists for the current process. They are a convenient way to share data between different parts of an app without creating global variables or having to pass the data around manually, but they should be used sparingly since they often create tighter coupling between classes.
 
-To turn a class into a singleton, you place the following method into the implementation (`.m`) file, where the method name is prefixed with `shared` plus another word which best describes your class.  For example, if the class is a network or location manager, you would name the method `sharedManager` instead of `sharedInstance`.
+To turn a class into a singleton, you adopt the protocol `MulleObjCSingleton`.
 
 ```objC
 + (instancetype)sharedInstance
