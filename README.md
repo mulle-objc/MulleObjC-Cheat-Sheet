@@ -1,9 +1,7 @@
 # mulle-objc version
 This is a edited version of the Objective-C Cheat Sheet for mulle-objc. I took out everything that is not applicable to
 **mulle-objc**. Visit the original site [iwasrobbed/Objective-C-CheatSheet](//github.com/iwasrobbed/Objective-C-CheatSheet)
-for more informaion.
-
-I intentionally reworded this as if I had written this, to avoid confusion. The original list of contributors can be [found here](https://github.com/iwasrobbed/Objective-C-CheatSheet/graphs/contributors).
+for the original author's introduction and more information. The original list of contributors can be [found here](https://github.com/iwasrobbed/Objective-C-CheatSheet/graphs/contributors).
 
 
 # Objective-C Cheat Sheet
@@ -704,7 +702,7 @@ You can overrride the getter and setter of a property to create customized behav
 ```objC
 - (NSString *)fullName
 {
-    return( [NSString stringWithFormat:@"%@ %@", self.firstName, self.lastName]);
+    return( [NSString stringWithFormat:@"%@ %@", [self firstName], [self lastName]);
 }
 ```
 
@@ -948,15 +946,14 @@ Categories are also useful to:
 
 Categories are named with the format: `ClassYouAreExtending` + `DescriptorForWhatYouAreAdding`
 
-As an example, let's say that we need to add a new method to the `UIImage` class (and all subclasses) that allows us to easily resize or crop instances of that class.  You'd then need to create a header/implementation file pair named `UIImage+ResizeCrop` with the following implementation:
+As an example, let's say that we need to add a new method to a `PNGImage` class (and all subclasses) that allows us to easily crop instances of that class to a certain height.  You'd then need to create a header/implementation file pair named `PNGImage+HeightCrop` with the following implementation:
 
-UIImage+ResizeCrop.h
+PNGImage+HeightCrop.h
 
 ```objC
-@interface UIImage( ResizeCrop)
+@interface PNGImage( HeightCrop)
 
-- (UIImage *) croppedImageWithSize:(CGSize) size;
-- (UIImage *) resizedImageWithSize:(CGSize) size;
+- (UIImage *) croppedImageToHeight:(float) height;
 
 @end
 ```
@@ -964,25 +961,20 @@ UIImage+ResizeCrop.h
 UIImage+ResizeCrop.m
 
 ```objC
-#import "UIImage+ResizeCrop.h"
+#import "PNGImage+HeightCrop.h"
 
-@implementation UIImage( ResizeCrop)
+@implementation PNGImage( HeightCrop)
 
-- (UIImage *)croppedImageWithSize:(CGSize) size
-{
-    // Implementation code here
-}
-
-- (UIImage *)resizedImageWithSize:(CGSize) size
+- (UIImage *) croppedImageToHeight:(float) height
 {
     // Implementation code here
 }
 ```
 
-You could then call these methods on any instances of `UIImage` or it's subclasses such as:
+You could then call these methods on any instances of `PNGImage` or it's subclasses such as:
 
 ```objC
-UIImage *croppedImage = [userPhoto croppedImageWithSize:photoSize];
+PNGImage *croppedImage = [bobRossImage croppedImageToHeight:1024.0];
 ```
 
 #### Naming Conflicts
@@ -995,9 +987,8 @@ Great advice from [Apple's docs](https://developer.apple.com/library/ios/documen
 
 ### Delegation
 
-Delegation is basically a way to allow one class to react to changes made in another class or to influence the behavior of another class while minimizing coupling between the two.
-
-The most commonly known example of the delegate pattern in iOS is with `UITableViewDelegate` and `UITableViewDataSource`.  When you tell the compiler that your class conforms to these protocols, you are essentially agreeing to implement certain methods within your class that are required for a `UITableView` to properly function.
+Delegation is basically a way to allow one class to react to changes made in another class or to influence the behavior of another class while minimizing coupling between the two. Delegates are often associated with Protocols, so this is covered
+first:
 
 #### Conforming to an Existing Protocol
 
@@ -1008,20 +999,8 @@ To conform to an existing protocol, import the header file that contains the pro
 ```objC
 #import "RPLocationManager.h"
 
-@interface MyViewController : UIViewController <RPLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface MyController : Controller <RPLocationManagerDelegate>
 
-@end
-```
-
-**Option 2**: In the `.m` file:
-
-```objC
-#import "MyViewController.h"
-
-@interface MyViewController () <RPLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource>
-{
-    // Class extension implementation
-}
 @end
 ```
 
@@ -1032,12 +1011,12 @@ To create your own protocol for other classes to conform to, follow this syntax:
 RPLocationManager.h
 
 ```objC
-#import <SomeFrameworksYouNeed.h>
+#import "import.h"
 
 // Declare your protocol and decide which methods are required/optional
 // for the delegate class to implement
 @protocol RPLocationManagerDelegate <NSObject>
-- (void)didAcquireLocation:(CLLocation *)location;
+- (void)didAcquireLocation:(Location *)location;
 - (void)didFailToAcquireLocationWithError:(NSError *)error;
 @optional
 - (void)didFindLocationName:(NSString *)locationName;
@@ -1045,8 +1024,9 @@ RPLocationManager.h
 
 @interface RPLocationManager : NSObject
 
-// Create a weak, anonymous object to store a reference to the delegate class
-@property (nonatomic, weak) id <RPLocationManagerDelegate>delegate;
+// Create a property to store a reference to a delegate (delegates
+// aren't retained)
+@property(assign) id <RPLocationManagerDelegate> delegate;
 
 // Implement any other methods here
 
@@ -1055,7 +1035,10 @@ RPLocationManager.h
 
 When we declare the `@protocol` named `RPLocationManagerDelegate`, all methods are defaulted to being `@required` so it's not necessary to explicitly state this.  However, if you want certain methods to be `@optional` for conforming classes to implement, you must state this.
 
-Additionally, it is necessary to weakly declare an anonymously typed property called `delegate` which also references the `RPLocationManagerDelegate` protocol.
+#### Adding The Delegate Property
+
+Now we can declare a property, appropriately called `delegate`, which references the `RPLocationManagerDelegate` protocol.
+
 
 #### Adding Default Implementations to Your Own Protocol
 
@@ -1074,20 +1057,21 @@ In the example above, `RPLocationManager.h` declares some methods that the class
     // Perform some work
 
     // When ready, notify the delegate method
-    [self.delegate didAcquireLocation:locationObject];
+    [delegate didAcquireLocation:locationObject];
 }
 ```
 
 **Optional Methods**
 
 ```objC
-- (void)reverseGeoCode
+- (void) reverseGeoCode
 {
     // Perform some work
 
     // When ready, notify the delegate method
-    if ([self.delegate respondsToSelector:@selector(didFindLocationName:)]) {
-        [self.delegate didFindLocationName:locationName];
+    if ([delegate respondsToSelector:@selector( didFindLocationName:)]) 
+    {
+        [delegate didFindLocationName:locationName];
     }
 }
 ```
@@ -1101,7 +1085,7 @@ To implement a delegate method, just conform to the protocol like was discussed 
 MyViewController.m
 
 ```objC
-- (void)didFindLocationName:(NSString *)locationName
+- (void) didFindLocationName:(NSString *) locationName
 {
     NSLog(@"We found a location with the name %@", locationName);
 }
@@ -1116,7 +1100,7 @@ Subclassing is essentially the same as [inheritance](#inheritance), but you woul
 
 Many design patterns, such as [categories](#categories) and [delegation](#delegation), exist so that you don't have to subclass another class.  For example, the `UITableViewDelegate` protocol was created to allow you to provide the implementation of methods like `tableView:didSelectRowAtIndexPath:` in your own class instead of having to subclass `UITableView` to override that method.
 
-Other times, classes like `NSManagedObject` are designed to be easily subclassed.  The general rule of thumb is to subclass another class only if you can satisfy the [Liskov substitution principle](http://en.wikipedia.org/wiki/Liskov_substitution_principle):
+Other times, classes like `NSObject` are designed to be easily subclassed.  The general rule of thumb is to subclass another class only if you can satisfy the [Liskov substitution principle](http://en.wikipedia.org/wiki/Liskov_substitution_principle):
 
 >If S is a subtype of T, then objects of type T in a program may be replaced with objects of type S without altering any of the desirable properties of that program.
 
@@ -1135,9 +1119,9 @@ Car.h
 @property (nonatomic, strong) NSString *model;
 @property (nonatomic, assign) NSInteger year;
 
-- (void)startEngine;
-- (void)pressGasPedal;
-- (void)pressBrakePedal;
+- (void) startEngine;
+- (void) pressGasPedal;
+- (void) pressBrakePedal;
 
 @end
 ```
@@ -1149,17 +1133,17 @@ Car.m
 
 @implementation Car
 
-- (void)startEngine
+- (void)s tartEngine
 {
    NSLog(@"Starting the engine.");
 }
 
-- (void)pressGasPedal
+- (void) pressGasPedal
 {
     NSLog(@"Accelerating...");
 }
 
-- (void)pressBrakePedal
+- (void) pressBrakePedal
 {
     NSLog(@"Decelerating...");
 }
@@ -1176,7 +1160,7 @@ Toyota.h
 
 @interface Toyota : Car
 
-- (void)preventAccident;
+- (void) preventAccident;
 
 @end
 ```
@@ -1190,21 +1174,21 @@ Toyota.m
 
 - (void)startEngine
 {
-    // Perform custom start sequence, different from the superclass
+   // Perform custom start sequence, different from the superclass
 
-    NSLog(@"Starting the engine.");
+   NSLog(@"Starting the engine.");
 }
 
 - (void)preventAccident
 {
-    [self pressBrakePedal];
+   [self pressBrakePedal];
 
-    [self deployAirbags];
+   [self deployAirbags];
 }
 
 - (void)deployAirbags
 {
-   NSLog(@"Deploying the airbags.");
+   NSLog( @"Deploying the airbags.");
 }
 
 @end
@@ -1218,17 +1202,18 @@ Often times, classes implement designated class initializers to allow for easy i
 
 ```objC
 // The new designated initializer for this class
-- (instancetype)initWithFullName:(NSString *)fullName
+- (instancetype) initWithFullName:(NSString *) fullName
 {
-    if (self = [super init]) {
+    if( self = [super init]) 
+    {
         _fullName = fullName;
         [self commonSetup];
     }
-    return self;
+    return( self);
 }
 
 // Provide a sensible default for other initializers
-- (instancetype)init
+- (instancetype) init
 {
     return [self initWithFullName:@"Default User"];
 }
@@ -1237,9 +1222,10 @@ Often times, classes implement designated class initializers to allow for easy i
 If you'd rather someone not use a default initializer for some rare case, you should throw an exception and provide them with an alternative solution:
 
 ```objC
-- (instancetype)init {
-        [NSException raise:NSInvalidArgumentException
-                format:@"%s Using the %@ initializer directly is not supported. Use %@ instead.", __PRETTY_FUNCTION__, NSStringFromSelector(@selector(init)), NSStringFromSelector(@selector(initWithFrame:))];
+- (instancetype) init 
+{
+   [NSException raise:NSInvalidArgumentException
+               format:@"%s Using the %@ initializer directly is not supported. Use %@ instead.", __PRETTY_FUNCTION__, NSStringFromSelector(@selector(init)), NSStringFromSelector(@selector(initWithFrame:))];
     return nil;
 }
 ```
@@ -1263,7 +1249,7 @@ Additionally, if the superclass has primitive methods upon which other derived m
 
 #### Caveats
 
-Certain classes don't lend themselves well to being easily subclassed and therefore subclassing is discouraged in those cases.  An example of this is when trying to subclass a class cluster such as `NSString` or `NSNumber`.  Class clusters have quite a few private classes within them so it's difficult to ensure that you have overridden all of the primitive methods and designated initializers within the class cluster properly.
+Certain classes don't lend themselves well to being easily subclassed and therefore subclassing is discouraged in those cases.  An example of this is when trying to subclass a class cluster such as `NSString` or `NSNumber`.  Class clusters have quite a few private classes within them. And these may change each version. So it's difficult to ensure that you have overridden all of the primitive methods and designated initializers within the class cluster properly.
 
 ### Swizzling
 
@@ -1295,11 +1281,11 @@ An example of this might be if you have a library which requires an API key to u
 
 ```objC
 // Check for an empty API key
-- (void)checkForAPIKey
+- (void) assertAPIKey
 {
-    if (!self.apiKey || !self.apiKey.length) {
-        [NSException raise:@"Forecastr" format:@"Your Forecast.io API key must be populated before you can access the API.", nil];
-    }
+    if (! [[self apiKey] length}) 
+        [NSException raise:@"Forecastr" 
+                    format:@"Your Forecast.io API key must be populated before you can access the API.", nil];
 }
 ```
 
@@ -1308,27 +1294,27 @@ An example of this might be if you have a library which requires an API key to u
 If you're worried that a block of code is going to throw an exception, you can wrap it in a try-catch block but keep in mind that this has slight performance implications
 
 ```objC
-@try {
+@try 
+{
     // The code to try here
 }
-@catch (NSException *exception) {
+@catch (NSException *exception) 
+{
     // Handle the caught exception
 }
-@finally {
+@finally 
+{
     // Execute code here that would run after both the @try and @catch blocks
 }
 ```
 
 ### Recoverable Errors
 
-Many times, methods will return an `NSError` object in a failure block or as a pointer to a pointer (in the case of `NSFileManager`).  These are typically returned for recoverable errors and offer a much more pleasant user experience since they can clue the user into what just went wrong.
+Many times, methods will return an error condition. To access the full error explanation, you access the current `NSError` object. This object is contained in a thread-local variable analogous to `errno`:
 
 ```objC
-[forecastr getForecastForLocation:location success:^(id JSON) {
-    NSLog(@"JSON response was: %@", JSON);
-} failure:^(NSError *error, id response) {
-    NSLog(@"Error while retrieving forecast: %@", error.localizedDescription);
-}];
+   if( ! [NSFileHandle fileHandleForReadingAtPath:location])
+     NSLog(@"Failed because: %@", [NSError mulleCurrentError]);
 ```
 
 #### Creating Your Own Errors
@@ -1396,8 +1382,8 @@ AddPersonViewController.m
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Person *person = [people objectAtIndex:indexPath.row];
-    [self.delegate didSelectPerson:person];
+    Person *person = [people objectAtIndex:[indexPath row]];
+    [[self delegate] didSelectPerson:person];
 }
 ```
 
@@ -1413,7 +1399,7 @@ GroupViewController.m (the normal view)
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 
-    NSLog(@"Selected person: %@", person.fullName);
+    NSLog(@"Selected person: %@", [person fullName]);
 }
 ```
 
@@ -1443,7 +1429,7 @@ A possible implementation of the `textFieldDidBeginEditing:` method could be:
 ```objC
 #pragma mark - Text Field Observers
 
-- (void)textFieldDidBeginEditing:(NSNotification *)notification
+- (void) textFieldDidBeginEditing:(NSNotification *) notification
 {
     // Optional check to make sure the method was called from the notification
     if ([notification.name isEqualToString:UITextFieldTextDidBeginEditingNotification])
@@ -1458,7 +1444,7 @@ A possible implementation of the `textFieldDidBeginEditing:` method could be:
 It's important to remove yourself as an observer when the class is deallocated, otherwise `NSNotificationCenter` will attempt to call a method on a deallocated class and a crash will ensue.
 
 ```objC
-- (void)dealloc
+- (void) dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -1478,7 +1464,7 @@ Declare a string constant, using the notification name as the string's value:
 
 ```objC
 // Remember to put the extern of this in the header file
-NSString *const kRPAppDidResumeFromBackgroundNotification = @"RPAppDidResumeFromBackgroundNotification";
+NSString *RPAppDidResumeFromBackgroundNotification = @"RPAppDidResumeFromBackgroundNotification";
 ```
 
 Post notification:
@@ -1518,18 +1504,11 @@ Singleton's are a special kind of class where only one instance of the class exi
 To turn a class into a singleton, you adopt the protocol `MulleObjCSingleton`.
 
 ```objC
-+ (instancetype)sharedInstance
-{
-   static id sharedInstance = nil;
-   static dispatch_once_t onceToken;
-   dispatch_once(&onceToken, ^{
-      sharedInstance = [[self alloc] init];
-   });
-
-   return sharedInstance;
-}
+@interface MyClass < MulleObjCSingleton>
+@end
 ```
-The use of `dispatch_once` ensures that this method is only ever executed once, even if it's called multiple times across many classes or different threads.
+
+And you automatically gain a `+ (instancetype)sharedInstance` method.
 
 If the above code were placed within `MyClass`, then you would get a reference to that singleton class in another class with the following code:
 
