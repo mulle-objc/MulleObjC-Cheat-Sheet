@@ -5,7 +5,7 @@ I took out everything that is not applicable to
 **mulle-objc** and rewrote some parts to fit the current state of the art.
 Visit the original site [iwasrobbed/Objective-C-CheatSheet](//github.com/iwasrobbed/Objective-C-CheatSheet)
 for the original author's introduction and more information.
-The original list of contributors can be [found here](https://github.com/iwasrobbed/Objective-C-CheatSheet/graphs/contributors).
+The list of contributors can be [found here](//github.com/mulle-objc/MulleObjC-Cheat-Sheet/graphs/contributors).
 
 
 # MulleObjC Cheat Sheet
