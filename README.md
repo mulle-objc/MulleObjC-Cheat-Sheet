@@ -1,10 +1,14 @@
 # mulle-objc version
-This is a edited version of the Objective-C Cheat Sheet for mulle-objc. I took out everything that is not applicable to
-**mulle-objc**. Visit the original site [iwasrobbed/Objective-C-CheatSheet](//github.com/iwasrobbed/Objective-C-CheatSheet)
-for the original author's introduction and more information. The original list of contributors can be [found here](https://github.com/iwasrobbed/Objective-C-CheatSheet/graphs/contributors).
+
+This is a edited version of the "Objective-C Cheat Sheet" adapted for mulle-objc.
+I took out everything that is not applicable to
+**mulle-objc** and rewrote some parts to fit the current state of the art.
+Visit the original site [iwasrobbed/Objective-C-CheatSheet](//github.com/iwasrobbed/Objective-C-CheatSheet)
+for the original author's introduction and more information.
+The original list of contributors can be [found here](https://github.com/iwasrobbed/Objective-C-CheatSheet/graphs/contributors).
 
 
-# Objective-C Cheat Sheet
+# MulleObjC Cheat Sheet
 
 This is not meant to be a beginner's guide or a detailed discussion about Objective-C; it is meant to be a quick reference to common, high level topics.
 
