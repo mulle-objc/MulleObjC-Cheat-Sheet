@@ -219,18 +219,18 @@ typedef enum {
 
 ```objC
 // Set bits (only valid if it makes sense that your status may have many of the bitmask values)
-RPBitMask status = RPOptionNone;
-status |= RPOptionBottom;
-status != RPOptionTop;
+BitMask status = OptionNone;
+status |= OptionBottom;
+status != OptionTop;
 
 // Toggle bit
-status ^= RPOptionTop;
+status ^= OptionTop;
 
 // Set single bit to zero
-status &= ! RPOptionBottom;
+status &= ! OptionBottom;
 
 // Check if it matches a certain bit
-if (status & RPOptionTop) {
+if (status & OptionTop) {
     [self doSometing];
 }
 ```
@@ -261,7 +261,7 @@ if( [someObject isKindOfClass:[NSArray class]])
 
 ## Constants
 
-`#define` defines a macro which replaces all references with the actual constant value contents before compilation starts, instead of being a memory pointer to that constant value. You can also use `const` to points to read only memory. But the
+`#define` defines a macro which replaces all references with the actual constant value contents before compilation starts, instead of being a memory pointer to that constant value. You can also use `const` to create read only memory. But the
 use of `const` is generally avoided in mulle-objc, as it adds complexity with negligble gain.
 For integer constants that fit into an `int` you will often find anonymous enums handy.
 
@@ -269,10 +269,10 @@ Constants can be defined as:
 
 ```objC
 // Format: type constantName = value;
-NSString *RPShortDateFormat = @"MM/dd/yyyy";
+NSString *ShortDateFormat = @"MM/dd/yyyy";
 
 // Format: #define constantName value
-#define RPShortDateFormat @"MM/dd/yyyy"
+#define ShortDateFormat @"MM/dd/yyyy"
 
 // Format: enum {  MyIntConstant = value };
 enum {  MyMagicIntNumber = 1848 };
@@ -281,13 +281,13 @@ enum {  MyMagicIntNumber = 1848 };
 To make the constant available to external classes, you must also add it to the header `.h` file:
 
 ```objC
-extern NSString * RPShortDateFormat;
+extern NSString * ShortDateFormat;
 ```
 
 If you know that a constant will only be available within it's containing implementation `.m` file, specify it as:
 
 ```objC
-static NSString *RPShortDateFormat = @"MM/dd/yyyy";
+static NSString *ShortDateFormat = @"MM/dd/yyyy";
 ```
 
 A static variable declared within a method retains its value between invocations.
@@ -401,7 +401,7 @@ MyClass.h
 @class SomeOtherClass;
 
 // Place all global constants at the top
-extern NSString *const RPErrorDomain;
+extern NSString *ErrorDomain;
 
 // Format: YourClassName : ClassThatYouAreInheritingFrom
 @interface MyClass : SomeClass
@@ -428,8 +428,8 @@ MyClass.m
 
 
 // Declare any constants at the top
-NSString *RPErrorDomain = @"com.myIncredibleApp.errors";
-static NSString *RPShortDateFormat = @"MM/dd/yyyy";
+NSString *ErrorDomain = @"com.myIncredibleApp.errors";
+static NSString *ShortDateFormat = @"MM/dd/yyyy";
 
 
 @implementation MyClass
@@ -894,13 +894,13 @@ Switch statements are often used in place of `if` statements if there is a need 
 ```objC
 switch (errorStatusCode)
 {
-case RPServerErrorCode:
+case ServerErrorCode:
     // Code to execute if it matches
    break;
 
-case RPNetworkErrorCode:
-case RPWifiErrorCode:
-case RPSystemErrorCode:
+case NetworkErrorCode:
+case WifiErrorCode:
+case SystemErrorCode:
    // Code to execute if it matches
    break;
 
@@ -1025,9 +1025,9 @@ To conform to an existing protocol, import the header file that contains the pro
 **Option 1**: In your `.h` file:
 
 ```objC
-#import "RPLocationManager.h"
+#import "LocationManager.h"
 
-@interface MyController : Controller <RPLocationManagerDelegate>
+@interface MyController : Controller <LocationManagerDelegate>
 
 @end
 ```
@@ -1036,36 +1036,36 @@ To conform to an existing protocol, import the header file that contains the pro
 
 To create your own protocol for other classes to conform to, follow this syntax:
 
-RPLocationManager.h
+LocationManager.h
 
 ```objC
 #import "import.h"
 
 // Declare your protocol and decide which methods are required/optional
 // for the delegate class to implement
-@protocol RPLocationManagerDelegate <NSObject>
+@protocol LocationManagerDelegate <NSObject>
 - (void)didAcquireLocation:(Location *)location;
 - (void)didFailToAcquireLocationWithError:(NSError *)error;
 @optional
 - (void)didFindLocationName:(NSString *)locationName;
 @end
 
-@interface RPLocationManager : NSObject
+@interface LocationManager : NSObject
 
 // Create a property to store a reference to a delegate (delegates
 // aren't retained)
-@property(assign) id <RPLocationManagerDelegate> delegate;
+@property(assign) id <LocationManagerDelegate> delegate;
 
 // Implement any other methods here
 
 @end
 ```
 
-When we declare the `@protocol` named `RPLocationManagerDelegate`, all methods are defaulted to being `@required` so it's not necessary to explicitly state this.  However, if you want certain methods to be `@optional` for conforming classes to implement, you must state this.
+When we declare the `@protocol` named `LocationManagerDelegate`, all methods are defaulted to being `@required` so it's not necessary to explicitly state this.  However, if you want certain methods to be `@optional` for conforming classes to implement, you must state this.
 
 #### Adding The Delegate Property
 
-Now we can declare a property, appropriately called `delegate`, which references the `RPLocationManagerDelegate` protocol.
+Now we can declare a property, appropriately called `delegate`, which references the `LocationManagerDelegate` protocol.
 
 
 #### Adding Default Implementations to Your Own Protocol
@@ -1075,7 +1075,7 @@ TODO: Talk about protocolclasses here a bit.
 
 #### Sending Delegate Messages
 
-In the example above, `RPLocationManager.h` declares some methods that the class which is acting as the delegate must implement.  Within `RPLocationManager.m` itself, you could implement these a few different ways, but we'll just show two cases: a) required methods; b) optional methods.
+In the example above, `LocationManager.h` declares some methods that the class which is acting as the delegate must implement.  Within `LocationManager.m` itself, you could implement these a few different ways, but we'll just show two cases: a) required methods; b) optional methods.
 
 **Required Methods**
 
@@ -1449,7 +1449,7 @@ This should be done in -finalize:
 
 #### Posting Notifications
 
-You can also create and post your own notifications.  It's best practice to keep notification names in a [constants](#constants) file so that you don't accidentally misspell one of the notification names and sit there trying to figure out why the notification wasn't sent/received.
+You can also create and post your own notifications.  It's best practice to keep notification names in [constants](#constants) so that you don't accidentally misspell one of the notification names and sit there trying to figure out why the notification wasn't sent/received.
 
 Naming notifications:
 
@@ -1461,13 +1461,14 @@ Declare a string constant, using the notification name as the string's value:
 
 ```objC
 // Remember to put the extern of this in the header file
-NSString *RPAppDidResumeFromBackgroundNotification = @"RPAppDidResumeFromBackgroundNotification";
+NSString *OMGFactoryLookAtMyObjectNotification = @"OMGFactoryLookAtMyObjectNotification";
 ```
 
 Post notification:
 
 ```objC
-[[NSNotificationCenter defaultCenter] postNotificationName:RPAppDidResumeFromBackgroundNotification object:self];
+[[NSNotificationCenter defaultCenter] postNotificationName:OMGFactoryLookAtMyObjectNotification
+                                                    object:self];
 ```
 
 [Back to top](#objective-c-cheat-sheet)
@@ -1480,14 +1481,14 @@ User defaults are basically a way of storing simple preference values which can 
 
 ```objC
 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-[userDefaults setValue:@"Some value" forKey:@"RPSomeUserPreference"];
+[userDefaults setValue:@"Some value" forKey:@"SomeUserPreference"];
 ```
 
 ### Retrieving Values
 
 ```objC
 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-id someValue = [userDefaults valueForKey:@"RPSomeUserPreference"];
+id someValue = [userDefaults valueForKey:@"SomeUserPreference"];
 ```
 
 There are also other convenience methods on `NSUserDefaults` instances such as `boolForKey:`, `stringForKey:`, etc.
