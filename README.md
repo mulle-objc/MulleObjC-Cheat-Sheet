@@ -1,4 +1,4 @@
-# Preface
+# Preface <!-- omit in toc -->
 
 This is an edited version of the "Objective-C Cheat Sheet" adapted for mulle-objc.
 I took out everything that is not applicable to
@@ -8,31 +8,102 @@ for the original author's introduction and more information.
 The list of contributors can be [found here](//github.com/mulle-objc/MulleObjC-Cheat-Sheet/graphs/contributors).
 
 
-# MulleObjC Cheat Sheet
+# MulleObjC Cheat Sheet <!-- omit in toc -->
+
+![MulleObjC Cheat Sheet](https://raw.githubusercontent.com/mulle-objc/MulleObjC-Cheat-Sheet/master/cheatsheet.png)
 
 This is not meant to be a beginner's guide or a detailed discussion about Objective-C; it is meant to be a quick reference to common, high level topics.
 
-## Table of Contents
+## Table of Contents <!-- omit in toc -->
 
-* [Commenting](#commenting)
-* [Data Types](#data-types)
-* [Constants](#constants)
-* [Operators](#operators)
-* [Declaring Classes](#declaring-classes)
-* [Preprocessor Directives](#preprocessor-directives)
-* [Compiler Directives](#compiler-directives)
-* [Literals](#literals)
-* [Methods](#methods)
-* [Properties and Variables](#properties-and-variables)
-* [Naming Conventions](#naming-conventions)
-* [Blocks](#blocks)
-* [Control Statements](#control-statements)
-* [Enumeration](#enumeration)
-* [Extending Classes](#extending-classes)
-* [Error Handling](#error-handling)
-* [Loose Coupling](#loose-coupling)
-* [User Defaults](#user-defaults)
-* [Common Patterns](#common-patterns)
+- [Commenting](#commenting)
+- [Data Types](#data-types)
+  - [Size](#size)
+  - [C Primitives](#c-primitives)
+    - [Void](#void)
+    - [Integers](#integers)
+    - [Floating Point](#floating-point)
+  - [Objective-C Primitives](#objective-c-primitives)
+  - [Enum & Bitmask Types](#enum--bitmask-types)
+    - [Working with Bitmasks](#working-with-bitmasks)
+  - [Casting to Data Types](#casting-to-data-types)
+- [Constants](#constants)
+- [Operators](#operators)
+    - [Arithmetic Operators](#arithmetic-operators)
+    - [Relational and Equality Operators](#relational-and-equality-operators)
+    - [Logical Operators](#logical-operators)
+    - [Compound Assignment Operators](#compound-assignment-operators)
+    - [Increment/Decrement Operators](#incrementdecrement-operators)
+    - [Bitwise Operators](#bitwise-operators)
+    - [Other operators](#other-operators)
+- [Declaring Classes](#declaring-classes)
+    - [Instantiation](#instantiation)
+- [Preprocessor Directives](#preprocessor-directives)
+    - [Special operator](#special-operator)
+- [Compiler Directives](#compiler-directives)
+    - [Classes and Protocols](#classes-and-protocols)
+    - [Properties](#properties)
+    - [Errors](#errors)
+    - [Visibility of Instance Variables](#visibility-of-instance-variables)
+    - [Others](#others)
+- [Literals](#literals)
+    - [Caveats](#caveats)
+- [Methods](#methods)
+    - [Declaration Syntax](#declaration-syntax)
+    - [Calling Methods](#calling-methods)
+    - [Testing Selectors](#testing-selectors)
+- [Properties and Variables](#properties-and-variables)
+    - [Property Attributes](#property-attributes)
+    - [Accessing Properties](#accessing-properties)
+    - [Local Variables](#local-variables)
+- [Naming Conventions](#naming-conventions)
+    - [Methods and Properties](#methods-and-properties)
+    - [Class names and Protocols](#class-names-and-protocols)
+    - [Methods](#methods-1)
+    - [Properties, Instance Variables and Local Variables](#properties-instance-variables-and-local-variables)
+- [Control Statements](#control-statements)
+    - [If-Else If-Else](#if-else-if-else)
+    - [Ternary Operators](#ternary-operators)
+    - [For Loops](#for-loops)
+    - [Fast Enumeration](#fast-enumeration)
+    - [While Loop](#while-loop)
+    - [Do While Loop](#do-while-loop)
+    - [Switch](#switch)
+    - [Exiting Loops](#exiting-loops)
+- [Extending Classes](#extending-classes)
+  - [Inheritance](#inheritance)
+  - [Categories](#categories)
+    - [Implementation](#implementation)
+    - [Naming Conflicts](#naming-conflicts)
+  - [Delegation](#delegation)
+    - [Conforming to an Existing Protocol](#conforming-to-an-existing-protocol)
+    - [Creating Your Own Protocol](#creating-your-own-protocol)
+    - [Adding Default Implementations to a Protocol](#adding-default-implementations-to-a-protocol)
+    - [Adding The Delegate Property](#adding-the-delegate-property)
+    - [Sending Delegate Messages](#sending-delegate-messages)
+    - [Implementing Delegate Methods](#implementing-delegate-methods)
+  - [Subclassing](#subclassing)
+    - [Designated Initializers](#designated-initializers)
+    - [Overriding Methods](#overriding-methods)
+    - [Caveats](#caveats-1)
+  - [Swizzling](#swizzling)
+- [Error Handling](#error-handling)
+  - [Assertions](#assertions)
+  - [Exceptions](#exceptions)
+    - [Try-Catch](#try-catch)
+  - [Recoverable Errors](#recoverable-errors)
+    - [Creating Your Own Errors](#creating-your-own-errors)
+- [Loose coupling](#loose-coupling)
+  - [NSNotificationCenter](#nsnotificationcenter)
+    - [Registering Observers](#registering-observers)
+    - [Removing Observers](#removing-observers)
+    - [Posting Notifications](#posting-notifications)
+- [User Defaults](#user-defaults)
+  - [Storing Values](#storing-values)
+  - [Retrieving Values](#retrieving-values)
+- [Common Patterns](#common-patterns)
+  - [Singletons](#singletons)
+
 
 ## Commenting
 
@@ -391,7 +462,7 @@ The implementation file should contain (in this order):
 * An `@implementation` declaration specifying the class
 * All public and private methods
 
-##### Example:
+**Example:**
 
 MyClass.h
 
@@ -787,7 +858,7 @@ These both use `CapitalCase` where the first letter of every word is capitalized
 
 These should use verbs if they perform some action (e.g. `performInBackground`).  You should be able to infer what is happening, what arguments a method takes, or what is being returned just by reading a method signature.
 
-##### Example:
+**Example:**
 
 ``` objective-c
 // Correct
@@ -839,7 +910,7 @@ else
 
 The shorthand notation for an `if-else` statement is a ternary operator of the form: `someTestCondition ? doIfTrue : doIfFalse;`
 
-##### Example:
+**Example:**
 
 ``` objective-c
 - (NSString *) stringForTrueOrFalse:(BOOL) trueOrFalse
@@ -1095,11 +1166,6 @@ PROTOCOLCLASS_END()
 Now we can declare a property, appropriately called `delegate`, which references the `LocationManagerDelegate` protocol.
 
 
-#### Adding Default Implementations to Your Own Protocol
-
-TODO: Talk about protocolclasses here a bit.
-
-
 #### Sending Delegate Messages
 
 In the example above, `LocationManager.h` declares some methods that the class which is acting as the delegate must implement.  Within `LocationManager.m` itself, you could implement these a few different ways, but we'll just show two cases: a) required methods; b) optional methods.
@@ -1159,7 +1225,7 @@ Other times, classes like `NSObject` are designed to be easily subclassed.  The 
 
 >If S is a subtype of T, then objects of type T in a program may be replaced with objects of type S without altering any of the desirable properties of that program.
 
-##### Example:
+**Example:**
 
 Let's assume that we want to model cars.  All cars have similar behavior and characteristics, so let's put some of that in a superclass called `Car`.
 
