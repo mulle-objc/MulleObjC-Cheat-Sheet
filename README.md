@@ -40,7 +40,7 @@ Comments should be used to organize code and to provide extra information for fu
 
 Two ways of commenting:
 
-```objC
+``` objective-c
 // This is an inline comment
 
 /* This is a block comment
@@ -64,7 +64,7 @@ whatever
 ```
 
 Using `pragma` to organize your code:
-```objC
+``` objective-c
 #pragma mark - Use pragma mark to logically organize your code
 
 // Declare some methods or variables here
@@ -98,7 +98,7 @@ Integers can be signed or unsigned.  When signed, they can be either positive or
 
 **Integer types with their accompanying byte sizes:**
 
-```objC
+``` objective-c
 // Char (1 byte for both 32-bit and 64-bit)
 unsigned char anUnsignedChar = 255;
 NSLog(@"char size: %zu", sizeof(char));
@@ -126,7 +126,7 @@ NSLog(@"long long size: %zu", sizeof(long long));
 
 **Fixed width integer types with their accompanying byte sizes as the variable names:**
 
-```objC
+``` objective-c
 // Exact integer types
 int8_t aOneByteInt = 127;
 uint8_t aOneByteUnsignedInt = 255;
@@ -142,7 +142,7 @@ uint64_t anEightByteUnsignedInt = 18446744073709551615;
 
 Floats are always implicitly signed.
 
-```objC
+``` objective-c
 // Single precision floating-point (4 bytes for both 32-bit and 64-bit)
 float aFloat = 72.0345f;
 NSLog(@"float size: %zu", sizeof(float));
@@ -160,37 +160,37 @@ NSLog(@"long double size: %zu", sizeof(long double));
 
 **id** : Known as the anonymous or dynamic object type, it can store a reference to any type of **object** with no need to specify a pointer symbol.
 
-```objC
+``` objective-c
 id delegate = self->delegate;
 ```
 
 **Class** : Used to denote an object's class and can be used for introspection of objects.
 
-```objC
+``` objective-c
 Class aClass = [NSArray class];
 ```
 
 **Method** : Used to denote a method and can be used for swizzling methods.
 
-```objC
+``` objective-c
 Method aMethod = [aClass instanceMethodForSelector:aSelector);
 ```
 
 **SEL** : Used to specify a selector which is compiler-assigned code that identifies a method name.
 
-```objC
+``` objective-c
 SEL someSelector = @selector(someMethodName);
 ```
 
 **IMP** : Used to point to the memory address of the start of a method.  You will probably never need to use this.
 
-```objC
+``` objective-c
 IMP theImplementation = [self methodForSelector:someSelector];
 ```
 
 **BOOL** : Used to specify a boolean type where `0` is considered `NO` (false) and `1` is considered `YES` (true).  Any `nil` object is also considered to be `NO` so there is no need to perform an equality check with `nil` (e.g. just write `if (someObject)` not `if (someObject != nil)`).
 
-```objC
+``` objective-c
 // Boolean
 BOOL isBool = YES; // Or NO
 ```
@@ -203,7 +203,7 @@ Objective-C also has a number of other types such as `NSInteger`, `NSUInteger`, 
 
 Enumeration types can be defined a number of different ways:
 
-```objC
+``` objective-c
 enum {
     CellStyleDefault,
     CellStyleValue1,
@@ -221,7 +221,7 @@ typedef enum {
 
 #### Working with Bitmasks
 
-```objC
+``` objective-c
 // Set bits (only valid if it makes sense that your status may have many of the bitmask values)
 BitMask status = OptionNone;
 status |= OptionBottom;
@@ -245,14 +245,14 @@ Sometimes it is necessary to cast an `id` or different type into a specific clas
 
 Casting non-object data types:
 
-```objC
+``` objective-c
 // Format: nonObjectType variableName = (nonObjectType)variableNameToCastFrom;
 int anInt = (int) anAnonymouslyTypedNonObjectOrDifferentDataType;
 ```
 
 Casting object data types:
 
-```objC
+``` objective-c
 // Format: ClassNameOrObjectType *variableName = (ClassNameOrObjectType *)variableNameToCastFrom;
 NSArray *array;
 
@@ -271,7 +271,7 @@ For integer constants that fit into an `int` you will often find anonymous enums
 
 Constants can be defined as:
 
-```objC
+``` objective-c
 // Format: type constantName = value;
 NSString *ShortDateFormat = @"MM/dd/yyyy";
 
@@ -284,13 +284,13 @@ enum {  MyMagicIntNumber = 1848 };
 
 To make the constant available to external classes, you must also add it to the header `.h` file:
 
-```objC
+``` objective-c
 extern NSString * ShortDateFormat;
 ```
 
 If you know that a constant will only be available within it's containing implementation `.m` file, specify it as:
 
-```objC
+``` objective-c
 static NSString *ShortDateFormat = @"MM/dd/yyyy";
 ```
 
@@ -305,73 +305,73 @@ This is only useful for constants and should be avoided. Do not use static varia
 
 Operator | Purpose
 :---:    | :---:
-| `+`    | Addition
-| `-`    | Subtraction
-| `*`    | Multiplication
-| `/`    | Division
-| `%`    | Modulo
+| <tt>+</tt>    | Addition
+| <tt>-</tt>    | Subtraction
+| <tt>*</tt>    | Multiplication
+| <tt>/</tt>    | Division
+| <tt>%</tt>    | Modulo
 
 #### Relational and Equality Operators
 
 Operator | Purpose
 :---:    | :---:
-| `==`   | Equal to
-| `!=`   | Not equal to
-| `>`    | Greater than
-| `<`    | Less than
-| `>=`   | Greater than or equal to
-| `<=`   | Less than or equal to
+| <tt>==</tt>   | Equal to
+| <tt>!=</tt>   | Not equal to
+| <tt>></tt>    | Greater than
+| <tt><</tt>    | Less than
+| <tt>>=</tt>   | Greater than or equal to
+| <tt><=</tt>   | Less than or equal to
 
 #### Logical Operators
 
 Operator         | Purpose
 :---:            | :---:
-| `!`            | NOT
-| `&&`           | Logical AND
-| `&#124;&#124;` | Logical OR
+| <tt>!</tt>            | NOT
+| <tt>&&</tt>           | Logical AND
+| <tt>&#124;&#124;</tt> | Logical OR
 
 #### Compound Assignment Operators
 
 Operator     | Purpose
 :---:        | :---:
-| `+=`       | Addition
-| `-=`       | Subtraction
-| `*=`       | Multiplication
-| `/=`       | Division
-| `%=`       | Modulo
-| `&=`       | Bitwise AND
-| `&#124;=`  | Bitwise Inclusive OR
-| `&#126;=`  | Bitwise Complement
-| `^=`       | Exclusive OR
-| `<<=`      | Shift Left
-| `>>=`      | Shift Right
+| <tt>+=</tt>       | Addition
+| <tt>-=</tt>       | Subtraction
+| <tt>*=</tt>       | Multiplication
+| <tt>/=</tt>       | Division
+| <tt>%=</tt>       | Modulo
+| <tt>&=</tt>       | Bitwise AND
+| <tt>&#124;=</tt>  | Bitwise Inclusive OR
+| <tt>&#126;=</tt>  | Bitwise Complement
+| <tt>^=</tt>       | Exclusive OR
+| <tt><<=</tt>      | Shift Left
+| <tt>>>=</tt>      | Shift Right
 
 #### Increment/Decrement Operators
 
 Operator   | Purpose
 :---:      | :---:
-| `++`     | Addition
-| `--`     | Subtraction
+| <tt>++</tt>     | Addition
+| <tt>--</tt>     | Subtraction
 
 #### Bitwise Operators
 
 Operator   | Purpose
 :---:      | :---:
-| `& `     | Bitwise AND
-| `&#124;` | Bitwise Inclusive OR
-| `^ `     | Exclusive OR
-| `&#126;` | Unary complement (bit inversion)
-| `<< `    | Shift Left
-| `>>`     | Shift Right
+| <tt>& </tt>     | Bitwise AND
+| <tt>&#124;</tt> | Bitwise Inclusive OR
+| <tt>^ </tt>     | Exclusive OR
+| <tt>&#126;</tt> | Unary complement (bit inversion)
+| <tt><< </tt>    | Shift Left
+| <tt>>></tt>     | Shift Right
 
 #### Other operators
 
 Operator | Purpose
 :---:    | :---:
-| `()`   | Cast
-| `? :`  | Conditional
-| `&`    | Memory Address
-| `*`    | Pointer
+| <tt>()</tt>   | Cast
+| <tt>? :</tt>  | Conditional
+| <tt>&</tt>    | Memory Address
+| <tt>*</tt>    | Pointer
 
 [Back to top](#objective-c-cheat-sheet)
 
@@ -391,11 +391,11 @@ The implementation file should contain (in this order):
 * An `@implementation` declaration specifying the class
 * All public and private methods
 
-Example:
+##### Example:
 
 MyClass.h
 
-```objC
+``` objective-c
 #import "import.h"
 
 // import other classes in same project
@@ -424,7 +424,7 @@ extern NSString *ErrorDomain;
 
 MyClass.m
 
-```objC
+``` objective-c
 #import "MyClass.h"
 #import "SomeOtherClass.h"
 
@@ -493,14 +493,14 @@ static NSString *ShortDateFormat = @"MM/dd/yyyy";
 
 When you want to create a new instance of a class, you use the syntax:
 
-```objC
+``` objective-c
 MyClass *myClass = [MyClass instantiatedObject];
 ```
 
 This is a shortcut for `[[MyClass new] autorelease]` which in turn is a shortcut for:
 
 
-```objC
+``` objective-c
 MyClass *myClass = [[[MyClass alloc] init] autorelease];
 ```
 
@@ -619,35 +619,35 @@ Similar to `NSString` literals, collection objects made via literal arrays and d
 
 For methods without a return type, use `void`:
 
-```objC
+``` objective-c
 // Does not return anything or take any arguments
 - (void) someMethod;
 ```
 
 `+` precedes declarations of class methods:
 
-```objC
+``` objective-c
 // Call on a class (e.g. [MyClass someClassMethod]);
 + (void )someClassMethod;
 ```
 
 `-` precedes declarations of class instance methods:
 
-```objC
+``` objective-c
 // Called on an instance of a class (e.g. [[NSString alloc] init]);
 - (void) someClassInstanceMethod;
 ```
 
 Method arguments are declared after colons `:` and the method signature should describe the argument type:
 
-```objC
+``` objective-c
 // Does something with an NSObject argument
 - (void) doWorkWithObject:(NSObject *)object;
 ```
 
 Argument and return types are declared using type casting syntax:
 
-```objC
+``` objective-c
 // Returns an NSString object for the given NSObject arguments
 - (NSString *) stringFromObject:(NSObject *)object
              andSomeOtherObject:(NSObject *)otherObject;
@@ -663,7 +663,7 @@ At times, it is necessary to call a method in the superclass using `[super someM
 
 Under the hood, method calls are turned into a optimization-level dependent variation of one of these two C functions:
 
-```objC
+``` objective-c
 void  *mulle_objc_object_call( id self, SEL _cmd, void *_param);
 void  *mulle_objc_object_call( id self, SEL _cmd, void *_param, mulle_objc_superid_t superid);
 ```
@@ -672,7 +672,7 @@ void  *mulle_objc_object_call( id self, SEL _cmd, void *_param, mulle_objc_super
 
 If you'd like to test if a class responds to a certain selector before you send it (and possibly crash), you can do so with:
 
-```objC
+``` objective-c
 if ([someClassOrInstance respondsToSelector:@selector(someMethodName)])
 {
     // Call the selector or do something here
@@ -689,7 +689,7 @@ Declaring a property allows you to maintain a reference to an object within a cl
 
 Public properties are declared in the header (`.h`) file:
 
-```objC
+``` objective-c
 @interface MyClass : NSObject
 
 @property (retain) NSString *fullName;
@@ -701,7 +701,7 @@ The LLVM compiler automatically synthesizes all properties so there is no longer
 
 Even though you may not see them since they are created at build time, a getter/setter pair can be shown as:
 
-```objC
+``` objective-c
 - (NSString *) fullName
 {
     return( _fullName);
@@ -716,7 +716,7 @@ Even though you may not see them since they are created at build time, a getter/
 
 You can overrride the getter and setter of a property to create customized behavior, or even use this pattern to create transient properties such as:
 
-```objC
+``` objective-c
 - (NSString *) fullName
 {
     return( [NSString stringWithFormat:@"%@ %@", [self firstName], [self lastName]]);
@@ -729,7 +729,7 @@ Properties are always backed by an instance variable with a leading underscore, 
 
 When a property is specified, it is given the syntax:
 
-```objC
+``` objective-c
 @property SomeClass *someProperty;
 
 // Or
@@ -752,7 +752,7 @@ Type            | What it does
 
 Properties can be accessed with the bracket syntax:
 
-```objC
+``` objective-c
 [self myProperty];
 ```
 
@@ -760,7 +760,7 @@ Properties can be accessed with the bracket syntax:
 
 Local variables exist only within the scope of a method.
 
-```objC
+``` objective-c
 - (void) doWork
 {
    NSString *localStringVariable = @"Some local string variable.";
@@ -787,9 +787,9 @@ These both use `CapitalCase` where the first letter of every word is capitalized
 
 These should use verbs if they perform some action (e.g. `performInBackground`).  You should be able to infer what is happening, what arguments a method takes, or what is being returned just by reading a method signature.
 
-Example:
+##### Example:
 
-```objC
+``` objective-c
 // Correct
 - (Cell *) cellForRow:(NSUInteger) row
 {
@@ -820,7 +820,7 @@ Objective-C uses all of the same control statements that other languages have:
 
 #### If-Else If-Else
 
-```objC
+``` objective-c
 if (someTestCondition)
 {
     // Code to execute if the condition is true
@@ -839,9 +839,9 @@ else
 
 The shorthand notation for an `if-else` statement is a ternary operator of the form: `someTestCondition ? doIfTrue : doIfFalse;`
 
-Example:
+##### Example:
 
-```objC
+``` objective-c
 - (NSString *) stringForTrueOrFalse:(BOOL) trueOrFalse
 {
     return trueOrFalse ? @"True" : @"False";
@@ -850,7 +850,7 @@ Example:
 
 #### For Loops
 
-```objC
+``` objective-c
 NSInteger   i;
 
 for( i = 0; i < totalCount; i++)
@@ -861,7 +861,7 @@ for( i = 0; i < totalCount; i++)
 
 #### Fast Enumeration
 
-```objC
+``` objective-c
 Person  *person;
 
 for( person in arrayOfPeople)
@@ -874,7 +874,7 @@ where `arrayOfPeople` can be any object that conforms to the `NSFastEnumeration`
 
 #### While Loop
 
-```objC
+``` objective-c
 while( someTextCondition)
 {
    // Code to execute while the condition is true
@@ -883,7 +883,7 @@ while( someTextCondition)
 
 #### Do While Loop
 
-```objC
+``` objective-c
 do
 {
     // Code to execute while the condition is true
@@ -895,7 +895,7 @@ while (someTestCondition);
 
 Switch statements are often used in place of `if` statements if there is a need to test if a certain variable matches the value of another constant or variable.  For example, you may want to test if an error code integer you received matches an existing constant value or if it's a new error code.
 
-```objC
+``` objective-c
 switch (errorStatusCode)
 {
 case ServerErrorCode:
@@ -945,7 +945,7 @@ Looking through any framework or open source project, you can see the use of inh
 
 In Objective-C, all objects have much of their behavior defined by the `NSObject` class through the act of class inheritance.  Without inheritance, you would have to implement common methods like object or class equality checks on your own and you'd end up with a lot of duplicate code across classes.
 
-```objC
+``` objective-c
 // MyClass inherits all behavior from the NSObject class
 @interface MyClass : NSObject
 
@@ -975,7 +975,7 @@ As an example, let's say that we need to add a new method to a `PNGImage` class 
 
 PNGImage+HeightCrop.h
 
-```objC
+``` objective-c
 @interface PNGImage( HeightCrop)
 
 - (PNGImage *) croppedImageToHeight:(float) height;
@@ -985,7 +985,7 @@ PNGImage+HeightCrop.h
 
 PNGImage+ResizeCrop.m
 
-```objC
+``` objective-c
 #import "PNGImage+HeightCrop.h"
 
 @implementation PNGImage( HeightCrop)
@@ -998,7 +998,7 @@ PNGImage+ResizeCrop.m
 
 You could then call these methods on any instances of `PNGImage` or it's subclasses such as:
 
-```objC
+``` objective-c
 PNGImage *croppedImage = [bobRossImage croppedImageToHeight:1024.0];
 ```
 
@@ -1010,7 +1010,7 @@ you must be sure that the method is defined, where you expect it to be defined.
 
 e.g.
 
-```objC
+``` objective-c
 MULLE_OBJC_DEPENDS_ON_CATEGORY( Foo, OverrideMe);
 ```
 
@@ -1028,7 +1028,7 @@ To conform to an existing protocol, import the header file that contains the pro
 
 **Option 1**: In your `.h` file:
 
-```objC
+``` objective-c
 #import "LocationManager.h"
 
 @interface MyController : Controller <LocationManagerDelegate>
@@ -1042,7 +1042,7 @@ To create your own protocol for other classes to conform to, follow this syntax:
 
 LocationManager.h
 
-```objC
+``` objective-c
 #import "import.h"
 
 // Declare your protocol and decide which methods are required/optional
@@ -1067,6 +1067,29 @@ LocationManager.h
 
 When we declare the `@protocol` named `LocationManagerDelegate`, all methods are defaulted to being `@required` so it's not necessary to explicitly state this.  However, if you want certain methods to be `@optional` for conforming classes to implement, you must state this.
 
+#### Adding Default Implementations to a Protocol
+
+Protocols can provide default implementations of methods, that your class can simply inherit
+or choose to selectively override. For this you need to elevate a protocol to a protocolclass. Replace the `@protocol` declaration with a `PROTOCOLCLASS_INTERFACE` macro and add the default method inside the `PROTOCOLCLASS_IMPLEMENTATION` macro:
+
+``` objective-c
+PROTOCOLCLASS_INTERFACE( LocationManagerDelegate, NSObject)
+- (void)didAcquireLocation:(Location *)location;
+- (void)didFailToAcquireLocationWithError:(NSError *)error;
+@optional
+- (void)didFindLocationName:(NSString *)locationName;
+PROTOCOLCLASS_END()
+
+PROTOCOLCLASS_IMPLEMENTATION( LocationManagerDelegate)
+
+- (void) didFailToAcquireLocationWithError:(NSError *) error
+{
+   NSLog( @"shucks");
+}
+PROTOCOLCLASS_END()
+```
+
+
 #### Adding The Delegate Property
 
 Now we can declare a property, appropriately called `delegate`, which references the `LocationManagerDelegate` protocol.
@@ -1083,7 +1106,7 @@ In the example above, `LocationManager.h` declares some methods that the class w
 
 **Required Methods**
 
-```objC
+``` objective-c
 - (void)updateLocation
 {
     // Perform some work
@@ -1095,7 +1118,7 @@ In the example above, `LocationManager.h` declares some methods that the class w
 
 **Optional Methods**
 
-```objC
+``` objective-c
 - (void) reverseGeoCode
 {
     // Perform some work
@@ -1116,7 +1139,7 @@ To implement a delegate method, just conform to the protocol like was discussed 
 
 MyViewController.m
 
-```objC
+``` objective-c
 - (void) didFindLocationName:(NSString *) locationName
 {
     NSLog(@"We found a location with the name %@", locationName);
@@ -1136,13 +1159,13 @@ Other times, classes like `NSObject` are designed to be easily subclassed.  The 
 
 >If S is a subtype of T, then objects of type T in a program may be replaced with objects of type S without altering any of the desirable properties of that program.
 
-#### Example
+##### Example:
 
 Let's assume that we want to model cars.  All cars have similar behavior and characteristics, so let's put some of that in a superclass called `Car`.
 
 Car.h
 
-```objC
+``` objective-c
 #import "import.h"
 
 @interface Car : NSObject
@@ -1160,7 +1183,7 @@ Car.h
 
 Car.m
 
-```objC
+``` objective-c
 #import "Car.h"
 
 #import "import-private.h"
@@ -1190,7 +1213,7 @@ Now when we want to spawn off new car makes and models with unique characteristi
 
 Toyota.h
 
-```objC
+``` objective-c
 #import "Car.h"
 
 
@@ -1203,7 +1226,7 @@ Toyota.h
 
 Toyota.m
 
-```objC
+``` objective-c
 #import "Toyota.h"
 
 #import "import-private.h"
@@ -1239,7 +1262,7 @@ Even though `pressBrakePedal` is declared in the `Car` class, that method is sti
 
 Often times, classes implement designated class initializers to allow for easy instantiation.  If you override the main designated initializer for a class or provide a new designated initializer, it's important to ensure that you also override all other designated initializers so they use your new implementation instead of the superclass version.  If you forget to do so and someone calls one of the secondary designated initializers on your subclass, they will get behavior from the superclass instead.
 
-```objC
+``` objective-c
 // The new designated initializer for this class
 - (instancetype) initWithFullName:(NSString *) fullName
 {
@@ -1260,7 +1283,7 @@ Often times, classes implement designated class initializers to allow for easy i
 
 If you'd rather someone not use a default initializer for some rare case, you should throw an exception and provide them with an alternative solution:
 
-```objC
+``` objective-c
 - (instancetype) init
 {
    [NSException raise:NSInvalidArgumentException
@@ -1273,7 +1296,7 @@ If you'd rather someone not use a default initializer for some rare case, you sh
 
 If you're subclassing another class to override a method within that class, you must be a little cautious.  If you want to maintain the same behavior as the superclass, but just modify it slightly, you can call `super` within the override like this:
 
-```objC
+``` objective-c
 - (void) myMethod
 {
     // You don't have to call super as the first method
@@ -1314,7 +1337,7 @@ Errors are typically handled three different ways: assertions, exceptions, and r
 
 Assertions are used when you want to ensure that a value is what it is supposed to be.  If it's not the correct value, you force exit the app.
 
-```objC
+``` objective-c
 NSAssert(someCondition, @"The condition was false, so we are exiting the app.");
 ```
 
@@ -1326,7 +1349,7 @@ Exceptions are only used for programming or unexpected runtime errors.  Examples
 
 An example of this might be if you have a library which requires an API key to use.
 
-```objC
+``` objective-c
 // Check for an empty API key
 - (void) assertAPIKey
 {
@@ -1340,7 +1363,7 @@ An example of this might be if you have a library which requires an API key to u
 
 If you're worried that a block of code is going to throw an exception, you can wrap it in a try-catch block but keep in mind that this has slight performance implications
 
-```objC
+``` objective-c
 @try
 {
     // The code to try here
@@ -1362,7 +1385,7 @@ Using exceptions as an error reporting mechanism is generally discouraged.
 
 Many times, methods will return an error condition. To access the full error explanation, you access the current `NSError` object. This object is contained in a thread-local variable analogous to `errno`:
 
-```objC
+``` objective-c
    if( ! [NSFileHandle fileHandleForReadingAtPath:location])
      NSLog(@"Failed because: %@", [NSError mulleCurrentError]);
 ```
@@ -1371,7 +1394,7 @@ Many times, methods will return an error condition. To access the full error exp
 
 It's also possible to create your own `NSError` objects to return in methods.
 
-```objC
+``` objective-c
 // Error domain & enums
 NSString *MyErrorDomain = @"de.wasauchimmer.errors";
 enum MyErrorType
@@ -1419,7 +1442,7 @@ Notifications are broadcast messages that are used to decouple classes and estab
 
 You can register to be notified when a certain event has happened, including system notifications, such as when a `NSBundle` has been loaded.
 
-```objC
+``` objective-c
 [[NSNotificationCenter defaultCenter] addObserver:self
                                          selector:@selector( bundleDidLoad):
                                              name:NSBundleDidLoadNotification
@@ -1430,7 +1453,7 @@ When the `NSBundleDidLoadNotification` notification is broadcast by the OS frame
 
 A possible implementation of the `bundleDidLoad:` method could be:
 
-```objC
+``` objective-c
 - (void) bundleDidLoad:(NSNotification *) notification
 {
     // Optional check to make sure the method was called from the notification
@@ -1443,7 +1466,7 @@ A possible implementation of the `bundleDidLoad:` method could be:
 It's important to remove yourself as an observer before the class is deallocated, otherwise `NSNotificationCenter` will attempt to call a method on a deallocated class and a crash will ensue.
 This should be done in -finalize:
 
-```objC
+``` objective-c
 - (void) finalize
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -1463,14 +1486,14 @@ Notifications are identified by `NSString` objects whose names are composed in t
 
 Declare a string constant, using the notification name as the string's value:
 
-```objC
+``` objective-c
 // Remember to put the extern of this in the header file
 NSString *OMGFactoryLookAtMyObjectNotification = @"OMGFactoryLookAtMyObjectNotification";
 ```
 
 Post notification:
 
-```objC
+``` objective-c
 [[NSNotificationCenter defaultCenter] postNotificationName:OMGFactoryLookAtMyObjectNotification
                                                     object:self];
 ```
@@ -1483,14 +1506,14 @@ User defaults are basically a way of storing simple preference values which can 
 
 ### Storing Values
 
-```objC
+``` objective-c
 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 [userDefaults setValue:@"Some value" forKey:@"SomeUserPreference"];
 ```
 
 ### Retrieving Values
 
-```objC
+``` objective-c
 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 id someValue = [userDefaults valueForKey:@"SomeUserPreference"];
 ```
@@ -1507,7 +1530,7 @@ Singleton's are a special kind of class where only one instance of the class exi
 
 To turn a class into a singleton, you adopt the protocol `MulleObjCSingleton`.
 
-```objC
+``` objective-c
 @interface MyClass < MulleObjCSingleton>
 @end
 ```
@@ -1516,7 +1539,7 @@ By that you automatically gain a `+ (instancetype) sharedInstance` method.
 
 If the above code were placed within `MyClass`, then you would get a reference to that singleton class in another class with the following code:
 
-```objC
+``` objective-c
 MyClass *myClass = [MyClass sharedInstance];
 [myClass doSomething];
 NSLog(@"Property value is %@", myClass.someProperty);
