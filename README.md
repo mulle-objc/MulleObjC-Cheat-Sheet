@@ -5,12 +5,12 @@ I took out everything that is not applicable to
 **mulle-objc** and rewrote some parts to fit the current state of the art.
 Visit the original site [iwasrobbed/Objective-C-CheatSheet](//github.com/iwasrobbed/Objective-C-CheatSheet)
 for the original author's introduction and more information.
-The list of contributors can be [found here](//github.com/mulle-objc/MulleObjC-Cheat-Sheet/graphs/contributors).
+The list of contributors can be [found here](//github.com/mulle-objc/mulle-objc-Cheat-Sheet/graphs/contributors).
 
 
-# MulleObjC Cheat Sheet <!-- omit in toc -->
+# mulle-objc Cheat Sheet <!-- omit in toc -->
 
-![MulleObjC Cheat Sheet](https://raw.githubusercontent.com/mulle-objc/MulleObjC-Cheat-Sheet/master/cheatsheet.png)
+![mulle-objc Cheat Sheet](https://raw.githubusercontent.com/mulle-objc/mulle-objc-Cheat-Sheet/master/cheatsheet.png)
 
 This is not meant to be a beginner's guide or a detailed discussion about Objective-C; it is meant to be a quick reference to common, high level topics.
 
