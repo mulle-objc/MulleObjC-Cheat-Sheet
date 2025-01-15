@@ -282,12 +282,13 @@ enum {
     CellStyleSubtitle
 };
 
-typedef enum {
+typedef NS_ENUM( NSInteger, CellStyle)
+{
     CellStyleDefault,
     CellStyleValue1,
     CellStyleValue2,
     CellStyleSubtitle
-} CellStyle;
+};
 ```
 
 #### Working with Bitmasks
@@ -565,7 +566,7 @@ static NSString *ShortDateFormat = @"MM/dd/yyyy";
 When you want to create a new instance of a class, you use the syntax:
 
 ``` objective-c
-MyClass *myClass = [MyClass instantiatedObject];
+MyClass *myClass = [MyClass object];
 ```
 
 This is a shortcut for `[[MyClass new] autorelease]` which in turn is a shortcut for:
@@ -631,7 +632,7 @@ Directive     | Purpose
 :---:         | :---:
 `@dynamic`    | Tells the compiler that the setter/getter methods are not implemented by the class itself but somewhere else, like the superclass
 `@property`   | Declares a property with a backing instance variable
-`@synthesize` | Synthesizes a property and allows the compiler to generate setters/getters for the backing instance variable
+`@synthesize` | Backwards compatibility directive. Does nothing now.
 
 #### Errors
 
@@ -732,11 +733,11 @@ Methods are called using bracket syntax: `[self someMethod];` or `[self sometMet
 
 At times, it is necessary to call a method in the superclass using `[super someMethod];`.
 
-Under the hood, method calls are turned into a optimization-level dependent variation of one of these two C functions:
+Under the hood, method calls are turned into optimization-level dependent variations of one of these two C functions:
 
 ``` objective-c
 void  *mulle_objc_object_call( id self, SEL _cmd, void *_param);
-void  *mulle_objc_object_call( id self, SEL _cmd, void *_param, mulle_objc_superid_t superid);
+void  *mulle_objc_object_call_super( id self, SEL _cmd, void *_param, mulle_objc_superid_t superid);
 ```
 
 #### Testing Selectors
@@ -794,7 +795,7 @@ You can overrride the getter and setter of a property to create customized behav
 }
 ```
 
-Properties are always backed by an instance variable with a leading underscore, so creating a property called `firstName` will have a backing instance variable with the name `_firstName`.  You only access that private instance variable if you override the getter/setter or if you need to setup the instance variable in the class `init` method.
+Properties are always backed by an instance variable with a leading underscore, so creating a property called `firstName` will have a backing instance variable with the name `_firstName`, unless the `dynamic` attribute is specified. You only access that private instance variable if you override the getter/setter or if you need to setup the instance variable in the class `init` method.
 
 #### Property Attributes
 
@@ -818,6 +819,9 @@ Type            | What it does
 `readwrite`     | This is the default and generates both a setter and a getter for the property.  Often times, a `readonly` property will be publicly defined and then a `readwrite` for the same property name will be privately redefined to allow mutation of the property value within that class only.
 `getter=method` | Used to specify a different name for the property's getter method.  This is typically done for boolean properties (e.g. `getter=isFinished`)
 `setter=method` | Used to specify a different name for the property's setter method. (e.g. `setter=setProjectAsFinished`)
+`observable`    | A setter method will call `-willChange` before setting the value
+`container`     | Adds additional accessors to the property, an `adder` and a `remover`
+`dynamic`       | The property is not backed by an instance variable
 
 #### Accessing Properties
 
